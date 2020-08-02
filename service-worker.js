@@ -27,11 +27,11 @@ self.addEventListener('message', (event) => {
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "99542875147df6e0fe00b6a44d96dd62"
+    "revision": "72a076236868e3e4557fc71724599261"
   },
   {
     "url": "about.html",
-    "revision": "c5844ad2c06f22393ddf0ed3b408647f"
+    "revision": "e7b44696ee06b455192d9b4a4a29cb3b"
   },
   {
     "url": "assets/css/0.styles.3d93b943.css",
@@ -134,8 +134,8 @@ self.__precacheManifest = [
     "revision": "916450d63d3b927ea0a9baa7119225eb"
   },
   {
-    "url": "assets/js/17.1ccbab02.js",
-    "revision": "18ffbee2273cccdad712f61b19a59ea1"
+    "url": "assets/js/17.8d4b56cd.js",
+    "revision": "6129abebe1a0282999bd7856f5bb3b15"
   },
   {
     "url": "assets/js/18.3cdf9829.js",
@@ -162,8 +162,8 @@ self.__precacheManifest = [
     "revision": "2ea8aea9093eaf33b82d6e6890b8b8c5"
   },
   {
-    "url": "assets/js/6.0d12de47.js",
-    "revision": "57215dc726c29a36f93dffdbf3674c6e"
+    "url": "assets/js/6.0eebbfc4.js",
+    "revision": "917ac30d9bf815cd7742c4a591a8e4c2"
   },
   {
     "url": "assets/js/7.44e4ca91.js",
@@ -178,56 +178,56 @@ self.__precacheManifest = [
     "revision": "5a4653a5111eac3f50d99651311a446a"
   },
   {
-    "url": "assets/js/app.bf0e06b0.js",
-    "revision": "e1106cb2641c8e5f08556ee3efc3a83f"
+    "url": "assets/js/app.05cc3a59.js",
+    "revision": "9bdb22678b6cd37f1ef4a9215b0d31a8"
   },
   {
     "url": "img/index.html",
-    "revision": "63ff466c4fb69c01be2215c89815b57c"
+    "revision": "fe22128edb8c41df11cebad615991060"
   },
   {
     "url": "index.html",
-    "revision": "5c1b280710caebf972d211c21f0c1296"
+    "revision": "d4f3d19e2bd7a122745bf7ea65aab826"
   },
   {
     "url": "posts/2020/03/20/selfstudy-programming-vs-attend-training.html",
-    "revision": "3823d25076303ae882a31a3319132cf2"
+    "revision": "13cc0a812648ae8311c1c3b1789b8f12"
   },
   {
     "url": "posts/2020/06/22/deploy-blog-using-github-action.html",
-    "revision": "15bdb137d90483cecf00197ab85dd148"
+    "revision": "4367226fd2bcf23cb506f7841c3011f9"
   },
   {
     "url": "posts/categories/article.html",
-    "revision": "8ba3178e6b3033ecd5e9c4e9c75e47be"
+    "revision": "02b435cb7c7afd13f6e6b8db0ebf65e7"
   },
   {
     "url": "posts/categories/index.html",
-    "revision": "e2b2ea0c5c2fe2b4d6f3ff7daf232529"
+    "revision": "e9b77fe493f4269ea47a3810af8f3118"
   },
   {
     "url": "posts/categories/转载.html",
-    "revision": "6a45a1a033f67217d5b5bda253b2c13a"
+    "revision": "086a931950e0045d931a9bc7d1cb7b44"
   },
   {
     "url": "posts/index.html",
-    "revision": "e5bcfa5643801101c830fcbaea8cbeb5"
+    "revision": "b025d83ee0d92acc5f3e473161a876cd"
   },
   {
     "url": "posts/tags/CI.html",
-    "revision": "342da06b9d55a3377be7ab47a62f8ca6"
+    "revision": "bbd1e4de291a7d9931b6851c9e26a08e"
   },
   {
     "url": "posts/tags/Github.html",
-    "revision": "587ff6821e69e96685a153f20c02912a"
+    "revision": "0b7b0c57b01bd255d561c77784f84a51"
   },
   {
     "url": "posts/tags/index.html",
-    "revision": "37b7c0bc359b6416d00cd0bc89dc125d"
+    "revision": "8ec23d4458b1730c1f2fb5012ad9e28a"
   },
   {
     "url": "posts/tags/programming.html",
-    "revision": "b36731e9eb18c14060dc71527220d6c1"
+    "revision": "03731a9a63e50dcb3692cf136e189dcb"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
