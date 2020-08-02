@@ -27,11 +27,11 @@ self.addEventListener('message', (event) => {
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "ae193acf06399f61d7a04e5ec85c3217"
+    "revision": "d0e5311d588109f9e34e773eb0ede354"
   },
   {
     "url": "about.html",
-    "revision": "f863f16992bc58a314a9b0618f204fab"
+    "revision": "723a0ec383e862a095dd288077f45fb4"
   },
   {
     "url": "assets/css/0.styles.3d93b943.css",
@@ -178,56 +178,56 @@ self.__precacheManifest = [
     "revision": "5a4653a5111eac3f50d99651311a446a"
   },
   {
-    "url": "assets/js/app.b781ad7c.js",
-    "revision": "cd92d2d7ae5ff6d19612ba5bf9c918af"
+    "url": "assets/js/app.665b0efe.js",
+    "revision": "b2b00cccdabdf2fc5b870673f1fc0c5f"
   },
   {
     "url": "img/index.html",
-    "revision": "a1b7806bd17831f8d11ca2e24fa33ef6"
+    "revision": "df5a9e58ee4195c5993cbe0609c9cc7a"
   },
   {
     "url": "index.html",
-    "revision": "dde4ba864db24c3414a927aefa311dd4"
+    "revision": "7114a684e0b3714d227cb600d6713980"
   },
   {
     "url": "posts/2020/03/20/selfstudy-programming-vs-attend-training.html",
-    "revision": "132deb849f52c207ec3d7d0a00b65b22"
+    "revision": "b2e9a26f147fedf39e7c5d564c7a778f"
   },
   {
     "url": "posts/2020/06/22/deploy-blog-using-github-action.html",
-    "revision": "ce40b79f1964dfac40f5c4acebd5fed7"
+    "revision": "09e5ffcbdcf247c7f01c25f72a9c7d92"
   },
   {
     "url": "posts/categories/article.html",
-    "revision": "2aa775cceb6031075fe34b090018426a"
+    "revision": "92b7af0d3e65ce833819a26e9d3bfeaf"
   },
   {
     "url": "posts/categories/index.html",
-    "revision": "378ff83aa5b50b8645e56755f6aea018"
+    "revision": "e8405c41546f9869cb15a64906ba0951"
   },
   {
     "url": "posts/categories/转载.html",
-    "revision": "9458f931dc36ea464ebad70c7b27f96c"
+    "revision": "fe2b8da58e17839edbcc769b3fbcda43"
   },
   {
     "url": "posts/index.html",
-    "revision": "10efde84d8f239ed1f85f5f4af45ec68"
+    "revision": "0dac7650249c7b0e47802f30ae6be364"
   },
   {
     "url": "posts/tags/CI.html",
-    "revision": "801f5a7a24e4b2024a837f05e75deaf5"
+    "revision": "d717cd7c520cfdf4cd1f1ef15a3a677f"
   },
   {
     "url": "posts/tags/Github.html",
-    "revision": "5c9c02a72d872c14e957df16b778db29"
+    "revision": "f3c3f5863a74856e2890e9613ff7bb9c"
   },
   {
     "url": "posts/tags/index.html",
-    "revision": "72f954875827b856e337216fba0c3595"
+    "revision": "3dd1216e77eb391b2a9bdac3fea0b729"
   },
   {
     "url": "posts/tags/programming.html",
-    "revision": "ae7fb8ff7c95ee7d9bee21f4820fb3da"
+    "revision": "d7067a0bdb70161270b39c7e154502b1"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
