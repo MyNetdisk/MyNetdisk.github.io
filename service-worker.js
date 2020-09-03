@@ -27,11 +27,11 @@ self.addEventListener('message', (event) => {
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "d33a76ae2c77a590a73438dd063129c2"
+    "revision": "87cc9b2c39dad64fd027fb68acc6d401"
   },
   {
     "url": "about.html",
-    "revision": "1e6439a9ac8f061fdb4220a65253bd37"
+    "revision": "0f9c9979f7c1c415132c82645d9dcef4"
   },
   {
     "url": "assets/css/0.styles.3d93b943.css",
@@ -102,7 +102,7 @@ self.__precacheManifest = [
     "revision": "d1fed5cb9d0a4c4269c3bcc4d74d9e64"
   },
   {
-    "url": "assets/js/1.13a85b5f.js",
+    "url": "assets/js/1.b65db00c.js",
     "revision": "1b795ffe97841cfe6696b7f33a3242b2"
   },
   {
@@ -186,76 +186,76 @@ self.__precacheManifest = [
     "revision": "5a4653a5111eac3f50d99651311a446a"
   },
   {
-    "url": "assets/js/app.aec9a905.js",
-    "revision": "70a3b097a25313d4c99f5eef4db87618"
+    "url": "assets/js/app.1bb64238.js",
+    "revision": "c2ea6540dfe17772686f7c2499630d12"
   },
   {
     "url": "img/index.html",
-    "revision": "52f2e866b3ffedfa1b97522cff0af46b"
+    "revision": "88cfe31a7544a09a701b554ca6d0b372"
   },
   {
     "url": "index.html",
-    "revision": "c166e06be4e1f880947d071f70e451bc"
+    "revision": "be61600566cca4ce25b315064ea6b945"
   },
   {
     "url": "posts/2020/03/20/selfstudy-programming-vs-attend-training.html",
-    "revision": "998cdd41715ab3c8620e2c510408ccf9"
+    "revision": "de4672de7b14137cca1783703f56f307"
   },
   {
     "url": "posts/2020/06/22/deploy-blog-using-github-action.html",
-    "revision": "260cbb7356dd5cc7c7710d4b6d5b2e77"
+    "revision": "703448e7083241ff8d05a44532a3d5e5"
   },
   {
     "url": "posts/2020/08/22/_22.html",
-    "revision": "ff8be61e7ed908554d1b9f81940c3ac2"
+    "revision": "9ba8ec29b1434a9ccae591bb9b7e8546"
   },
   {
     "url": "posts/2020/09/02/a-shortcut-to-successful-public-speaking.html",
-    "revision": "4044c1caa8b02dac4799c64971c85c75"
+    "revision": "e2d482afa1836de4309bc6eabf22137e"
   },
   {
     "url": "posts/categories/article.html",
-    "revision": "d340e2bf8cb1cfa953b37c6d27122c1b"
+    "revision": "5f87ce9216fab86d573a00ba7a243a1a"
   },
   {
     "url": "posts/categories/diary.html",
-    "revision": "d863d84f57c3327ec2c45e9017d0e87b"
+    "revision": "9bcb5995518637c6034791dd142c79da"
   },
   {
     "url": "posts/categories/essay.html",
-    "revision": "987c014a90e120581b4ab2bfa823f857"
+    "revision": "14cc39333f64116a846747e5c54c23d0"
   },
   {
     "url": "posts/categories/index.html",
-    "revision": "5f0fc0a416b441fac7b2aa12b91dcfd0"
+    "revision": "7ce488b6e51efaacac7b1dc30b5bf3e6"
   },
   {
     "url": "posts/index.html",
-    "revision": "24c85c1e5f50593b636032da78bc48eb"
+    "revision": "d21b7f4307f4a8fbbfbc87ba645371f8"
   },
   {
     "url": "posts/tags/CI.html",
-    "revision": "88bc53194eceb28d20ed98202678231a"
+    "revision": "9c2fb209da90c65df01cfd4a61cd3cd6"
   },
   {
     "url": "posts/tags/diary.html",
-    "revision": "77c11c76468dbef27ce6ebbbed1466a5"
+    "revision": "0c82b85ea2304c2814c209386399ac66"
   },
   {
     "url": "posts/tags/Github.html",
-    "revision": "ff0da064362d855af278fab0a6f0c9ae"
+    "revision": "f4a1d33118aa3bf5e07710b930809d2a"
   },
   {
     "url": "posts/tags/index.html",
-    "revision": "6972bfc6c3cd0c372cfe0510e370be9f"
+    "revision": "a11fa98651d67f3b78de2c8d2ca5c201"
   },
   {
     "url": "posts/tags/programming.html",
-    "revision": "8b89dd80f0cb930f33d9fae94d60c015"
+    "revision": "6ac2c36da9b163a6d982f9e2b7314e17"
   },
   {
     "url": "posts/tags/reading.html",
-    "revision": "867e8b25132577a82b412f4f48df2c07"
+    "revision": "86f2404e425f93289986d2a97c719519"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
