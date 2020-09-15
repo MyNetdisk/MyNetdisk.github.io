@@ -27,11 +27,11 @@ self.addEventListener('message', (event) => {
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "36f19792c8680598feda93a7c9f99b2f"
+    "revision": "a1ae24799d38cd7768b5c9658bf5471f"
   },
   {
     "url": "about.html",
-    "revision": "6ec67b396d5b7e3acac27ec1cd3a3f3a"
+    "revision": "6061cb34399f79726509cb1dfb05207e"
   },
   {
     "url": "assets/css/0.styles.3d93b943.css",
@@ -174,36 +174,40 @@ self.__precacheManifest = [
     "revision": "d49224d29e8a4e532a048a883c37fc96"
   },
   {
-    "url": "assets/js/18.503ec9d7.js",
-    "revision": "c24c2b8435b8d96048b8d5b295198241"
+    "url": "assets/js/18.6cc0107b.js",
+    "revision": "7f8c6c2341f74ca0c17a00ddd2a3464f"
   },
   {
-    "url": "assets/js/19.c98e357b.js",
-    "revision": "75b2d30d09bd472242564f0f6a855ba1"
+    "url": "assets/js/19.4d31b642.js",
+    "revision": "02c6a42fdc0ef8458600a53a0b4be6fe"
   },
   {
-    "url": "assets/js/20.4d0eacb7.js",
-    "revision": "18cee0651ef3971029c594dac126267f"
+    "url": "assets/js/20.97918ecf.js",
+    "revision": "4e46f89bf0345f02d6f9f45a82eccfcc"
   },
   {
-    "url": "assets/js/21.9ee983e1.js",
-    "revision": "ae78a1f7900dfe9105bdce433427221b"
+    "url": "assets/js/21.8bf5a73b.js",
+    "revision": "acb18e493de1ba93d646b6201c4473fc"
   },
   {
-    "url": "assets/js/22.0c7abc99.js",
-    "revision": "d1507d8adb08e67cbab451b20688a419"
+    "url": "assets/js/22.8cf49d97.js",
+    "revision": "45813320fb9150b4ac4dc84bc5dc3611"
   },
   {
-    "url": "assets/js/23.10540d63.js",
-    "revision": "77f2780d792fbc977a923a7e419f837e"
+    "url": "assets/js/23.62661312.js",
+    "revision": "ee81c9bd5f6ae450a446fd418892968f"
   },
   {
-    "url": "assets/js/24.e61cd8e7.js",
-    "revision": "dd763eafd92f0c4bb95d2818ab3f3472"
+    "url": "assets/js/24.e4f59d96.js",
+    "revision": "c1e2ce347498f136204ce41f8d93d0a8"
   },
   {
-    "url": "assets/js/3.4c4b6ac3.js",
-    "revision": "da62a0c7f837edcbd1a8c4be8e07ce55"
+    "url": "assets/js/25.f4e23272.js",
+    "revision": "16e4e079eb245ae8568ab14ca7793c1a"
+  },
+  {
+    "url": "assets/js/3.f483d621.js",
+    "revision": "a68c300e7077f90adc3ebd7e42d212a4"
   },
   {
     "url": "assets/js/4.8cc6f84c.js",
@@ -218,8 +222,8 @@ self.__precacheManifest = [
     "revision": "194fbd2afd3c3d02311239b8117af123"
   },
   {
-    "url": "assets/js/7.79315cf7.js",
-    "revision": "b9a7866c630d3003ad9666b59c79cb6e"
+    "url": "assets/js/7.d14b9871.js",
+    "revision": "f760bb431bb91311b6c2cf550040d56c"
   },
   {
     "url": "assets/js/8.ecafb99e.js",
@@ -230,84 +234,92 @@ self.__precacheManifest = [
     "revision": "22739e0b9ab2bd8e2d9bb1df10882a2a"
   },
   {
-    "url": "assets/js/app.36a15e00.js",
-    "revision": "cf9b1399a9edff2a450df140aff88c87"
+    "url": "assets/js/app.44c752cf.js",
+    "revision": "0a8138c69ef863fb7c54b03d426d6a6f"
   },
   {
     "url": "img/index.html",
-    "revision": "7121cc589989407914a66672080d8b09"
+    "revision": "d0be3f795847fb8f03887603e1eca986"
   },
   {
     "url": "index.html",
-    "revision": "adaaf3d1e834d88eb7069ff060f7a37d"
+    "revision": "3216103033e5c461a6c01e1e1f40fa5d"
   },
   {
     "url": "posts/2001/03/20/selfstudy-programming-vs-attend-training.html",
-    "revision": "8ed6e9597f0487c72634438cb2898c29"
+    "revision": "24ff89e64bbe268446c5bad799543f7c"
   },
   {
     "url": "posts/2020/03/17/the-github-action-implementation-is-automatically-released-to-the-cloud-server.html",
-    "revision": "fa13bb1b3d5e933334d877afc67e1989"
+    "revision": "31ce22783460cdd9a36c09c4aeeb8260"
+  },
+  {
+    "url": "posts/2020/04/05/china-s-real-estate-trend.html",
+    "revision": "093fabd5a1a2033022553a81d8b19192"
   },
   {
     "url": "posts/2020/06/22/deploy-blog-using-github-action.html",
-    "revision": "8b7762b37a95d9f56477018836dbdc7a"
+    "revision": "88b812ebc94d25b8ae0315e434d1812b"
   },
   {
     "url": "posts/2020/08/22/diary-one.html",
-    "revision": "6893aa2e7cb63e117b49b1cacc199c4d"
+    "revision": "09b58c772814661af6b59806a43315cc"
   },
   {
     "url": "posts/2020/09/02/a-shortcut-to-successful-public-speaking.html",
-    "revision": "e492b4f05f79662c03cfcdc6127919a2"
+    "revision": "ed1ede90726c2ed8a80e1823d2988f2a"
   },
   {
     "url": "posts/2020/09/14/critical-dialogue.html",
-    "revision": "f3dcbf20ee64436186ec9dac708d73ca"
+    "revision": "3343d205afc069469f518e838f4259c3"
   },
   {
     "url": "posts/categories/diary.html",
-    "revision": "8c491b94d39f5cc94c0be6af61cc1832"
+    "revision": "6a0cfcb6225de771a4e3056d6ddfba0f"
   },
   {
     "url": "posts/categories/essay.html",
-    "revision": "8d62c746e5471f1ad0cc67f4e3c52c47"
+    "revision": "0b03c183617c64da181fad4eb67f8f45"
   },
   {
     "url": "posts/categories/index.html",
-    "revision": "2887ea37aef032cc1b6257c2464cd185"
+    "revision": "4a2a0e5adef5da8d9916f36a3e272103"
   },
   {
     "url": "posts/categories/reprinted articles.html",
-    "revision": "0464a2dc631efd45cc6ceddc44e2b009"
+    "revision": "1eccba32853fa95ed11c80ef16af8ab0"
   },
   {
     "url": "posts/index.html",
-    "revision": "d0f833c60acb2fc79094e5bece1ee4ac"
+    "revision": "560e5826c44fdd851b759f8467e111f0"
   },
   {
     "url": "posts/tags/CI.html",
-    "revision": "537fd24887e7034509d4b1b6bf65e184"
+    "revision": "ca4035abccf71d339f2eea47e0cec725"
   },
   {
     "url": "posts/tags/diary.html",
-    "revision": "7ca8a547cd9d1745791a6d508aca4fc8"
+    "revision": "2d340cc469db846ec38e25c5765a990e"
   },
   {
     "url": "posts/tags/Github.html",
-    "revision": "aeb13a398a7f946db06f0e0955e4e1f3"
+    "revision": "b3c36ab6eb64013f02782eccc4c5fd12"
   },
   {
     "url": "posts/tags/index.html",
-    "revision": "34e02ee22561033280c66f5f99984231"
+    "revision": "5e7d7a83b1d8404e6a609bd02dcd06e0"
+  },
+  {
+    "url": "posts/tags/investment.html",
+    "revision": "a0a4159a750c4bffbd16bb744452444f"
   },
   {
     "url": "posts/tags/programming.html",
-    "revision": "f73777178a61fb3fe1d59064e671396f"
+    "revision": "9be3fef4cea91c56de7900f5d53b77cf"
   },
   {
     "url": "posts/tags/reading.html",
-    "revision": "8804d46b6f8f8d74e57d0c3849174220"
+    "revision": "f1b147c5a6c12abdb44aeea55c907e77"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
