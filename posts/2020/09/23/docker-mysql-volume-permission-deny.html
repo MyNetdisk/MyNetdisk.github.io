@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>docker-compose使用volume部署mysql时permission deny问题解决 | MyNetdisk</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/assets/icon/icon-152x152.png">
+    <link rel="mask-icon" href="/assets/icon/icon-152x152.png" color="#3eaf7c">
+    <meta name="description" content="一个方便个人写些学习笔记的环境，以静态博客的形式发布~">
+    <meta name="author" content="MyNetdisk">
+    <meta name="keywords" content="vuepress,blog,vue.js,博客,静态博客">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msapplication-TileImage" content="/assets/icon/icon-144x144.png">
+    <meta name="msapplication-TileColor" content="#000000">
+    <link rel="preload" href="/assets/css/0.styles.3d93b943.css" as="style"><link rel="preload" href="/assets/js/app.f150aa2b.js" as="script"><link rel="preload" href="/assets/js/10.d3ceb756.js" as="script"><link rel="preload" href="/assets/js/24.ad1f0446.js" as="script"><link rel="preload" href="/assets/js/8.ece81168.js" as="script"><link rel="prefetch" href="/assets/js/1.31f56298.js"><link rel="prefetch" href="/assets/js/11.085687ab.js"><link rel="prefetch" href="/assets/js/12.7fe5a653.js"><link rel="prefetch" href="/assets/js/13.d3cdf9f7.js"><link rel="prefetch" href="/assets/js/14.00f1ac3e.js"><link rel="prefetch" href="/assets/js/15.4f46c5a4.js"><link rel="prefetch" href="/assets/js/16.37b44ea9.js"><link rel="prefetch" href="/assets/js/17.723e7db1.js"><link rel="prefetch" href="/assets/js/18.ba97ce39.js"><link rel="prefetch" href="/assets/js/19.801d62df.js"><link rel="prefetch" href="/assets/js/20.1bf8382d.js"><link rel="prefetch" href="/assets/js/21.1ab7d339.js"><link rel="prefetch" href="/assets/js/22.7033a9a4.js"><link rel="prefetch" href="/assets/js/23.4ca8bd3f.js"><link rel="prefetch" href="/assets/js/25.7bdf877e.js"><link rel="prefetch" href="/assets/js/26.7c0fbdc4.js"><link rel="prefetch" href="/assets/js/27.58609bf2.js"><link rel="prefetch" href="/assets/js/3.bb853a34.js"><link rel="prefetch" href="/assets/js/4.dc86465e.js"><link rel="prefetch" href="/assets/js/5.3888770d.js"><link rel="prefetch" href="/assets/js/6.aee6310b.js"><link rel="prefetch" href="/assets/js/7.7e4cd116.js"><link rel="prefetch" href="/assets/js/9.31d57c86.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.3d93b943.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-meteorlxy"><header class="header" style="background-size:cover;background-repeat:no-repeat;background-position:center;background-attachment:scroll;background-image:url(/assets/img/bg-wall.jpg);" data-v-7a046aea><div data-v-e4145d0a data-v-7a046aea><nav class="navbar" data-v-e4145d0a><div class="container" data-v-e4145d0a><a href="/" class="router-link-active" data-v-e4145d0a><span class="navbar-site-name" data-v-e4145d0a>
+          MyNetdisk
+        </span></a> <div class="navbar-toggler" data-v-e4145d0a><svg class="icon" style="font-size:1.2em;" data-v-e4145d0a data-v-e4145d0a><title data-v-e4145d0a data-v-e4145d0a>menu</title><use xlink:href="#icon-menu" data-v-e4145d0a data-v-e4145d0a></use></svg></div> <div class="navbar-links" data-v-e4145d0a><a href="/" class="navbar-link" data-v-e4145d0a>
+            Home
+          </a><a href="/posts/" class="navbar-link router-link-active" data-v-e4145d0a>
+            Posts
+          </a><a href="/about.html" class="navbar-link" data-v-e4145d0a>
+            About
+          </a><a href="https://github.com/MyNetdisk/Vuepress-latest-version" target="_blank" rel="noopener noreferrer" class="navbar-link" data-v-e4145d0a><span data-v-e4145d0a>Github</span> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" data-v-e4145d0a data-v-e4145d0a><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div></div></nav> <div class="navbar-holder" style="display:none;" data-v-e4145d0a></div></div> <div class="banner" data-v-98d6aa8c data-v-7a046aea data-v-7a046aea><div class="container" data-v-98d6aa8c><div class="center" data-v-98d6aa8c><h1 data-v-98d6aa8c data-v-7a046aea>
+          docker-compose使用volume部署mysql时permission deny问题解决
+        </h1></div></div></div></header> <div class="container clearfix show-aside" data-v-4dd605a1 data-v-4dd605a1><main class="main" data-v-4dd605a1><div class="post" data-v-4dd605a1 data-v-4dd605a1><section class="post-meta main-div" data-v-4e23451f><section class="post-date clearfix" data-v-4e23451f><span class="create-date" data-v-4e23451f>
+      发布时间 : 2020-09-23
+    </span> <span class="update-date" data-v-4e23451f>
+      最后修改 : 2020-09-23
+    </span></section> <section class="post-links" data-v-4e23451f><a href="/posts/2020/09/22/the-girl-folded-by-hot-style.html" class="post-link" data-v-4e23451f>
+      上一篇 : 被爆款折叠的女孩(笔记)
+    </a> <!----></section></section> <article class="main-div"><div class="post-content content content__default"><div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>整体情况为使用 docker 做 mysql 的容器，然后结合其他服务一起通过 docker-compose 启动，并且为了一次性建表和设置用户权限我又在 mysql 中封装了 setup.sh、schema.sql、privileges.sql 这些自定义的脚本，在 Dockerfile 构造时执行，到目前为止都是正常的。
+但是由于每次 down 掉容器后，mysql 的数据会丢失无法持久化，所以在 docker-compose.yml 中配置了 volume 参数，然后就产生了如下的报错，包括调试过程中的报错。</p></div> <h2 id="问题"><a href="#问题" class="header-anchor">#</a> 问题</h2> <p>整体情况为使用 docker 做 mysql 的容器，然后结合其他服务一起通过 docker-compose 启动，并且为了一次性建表和设置用户权限我又在 mysql 中封装了 setup.sh、schema.sql、privileges.sql 这些自定义的脚本，在 Dockerfile 构造时执行，到目前为止都是正常的。
+但是由于每次 down 掉容器后，mysql 的数据会丢失无法持久化，所以在 docker-compose.yml 中配置了 volume 参数，然后就产生了如下的报错，包括调试过程中的报错。
+首先列几个可能的报错，这些都和这个有关系。
+问题一：mysqld: Can’t create/write to file ‘/var/lib/mysql/is_writable’ (Errcode: 13 - Permission denied)
+问题二：’su’ command in Docker returns ‘must be run from terminal’
+问题三：/usr/bin/mysqld_safe: 637: /usr/bin/mysqld_safe: cannot create /var/lib/mysql/c0ce8fdc06d0.err: Permission denied
+以上几个问题都是我在调试过程中出现的报错，采用过以下办法解决：
+1、在 docker-compos.yml 中添加</p> <div class="language-yaml line-numbers-mode"><pre class="language-yaml"><code>user<span class="token punctuation">:</span><span class="token string">&quot;1000:50&quot;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>2、保证 volume 配置对应的是/var/lib/mysql 目录，不能是/var/lib/mysql/data 更深一层目录
+3、在 Dockerfile 中添加权限指令 chmod 一类的，来修改文件权限
+上述的方法均无效，在列出真正的解决方案之前，我把我重要的几个配置文件列出来
+docker-compose.yml</p> <div class="language-yaml line-numbers-mode"><pre class="language-yaml"><code><span class="token key atrule">plate-nginx</span><span class="token punctuation">:</span>
+<span class="token key atrule">build</span><span class="token punctuation">:</span> ./nginx
+<span class="token key atrule">container_name</span><span class="token punctuation">:</span> plate<span class="token punctuation">-</span>nginx
+<span class="token key atrule">links</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> plate<span class="token punctuation">-</span>client<span class="token punctuation">:</span>plate<span class="token punctuation">-</span>client
+<span class="token punctuation">-</span> plate<span class="token punctuation">-</span>server<span class="token punctuation">:</span>plate<span class="token punctuation">-</span>server
+<span class="token key atrule">ports</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;80:80&quot;</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;443:443&quot;</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;7000:7000&quot;</span>
+<span class="token key atrule">plate-client</span><span class="token punctuation">:</span>
+<span class="token key atrule">build</span><span class="token punctuation">:</span> ./client
+<span class="token key atrule">container_name</span><span class="token punctuation">:</span> plate<span class="token punctuation">-</span>client
+<span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;/home/picture:/app/client/app/upload&quot;</span>
+<span class="token key atrule">ports</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;3000:3000&quot;</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;3001:3001&quot;</span>
+<span class="token key atrule">plate-server</span><span class="token punctuation">:</span>
+<span class="token key atrule">build</span><span class="token punctuation">:</span> ./server
+<span class="token key atrule">container_name</span><span class="token punctuation">:</span> plate<span class="token punctuation">-</span>server
+<span class="token key atrule">ports</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;7001:7001&quot;</span>
+<span class="token key atrule">plate-mysql</span><span class="token punctuation">:</span>
+<span class="token key atrule">build</span><span class="token punctuation">:</span> ./mysql
+<span class="token key atrule">container_name</span><span class="token punctuation">:</span> plate<span class="token punctuation">-</span>mysql
+<span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;/home/data:/var/lib/mysql&quot;</span>
+<span class="token key atrule">ports</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;3306:3306&quot;</span>
+<span class="token key atrule">environment</span><span class="token punctuation">:</span>
+<span class="token key atrule">MYSQL_USER</span><span class="token punctuation">:</span> root
+<span class="token key atrule">MYSQL_ROOT_PASSWORD</span><span class="token punctuation">:</span> <span class="token number">123456</span>
+<span class="token key atrule">phpmyadmin</span><span class="token punctuation">:</span>
+<span class="token key atrule">image</span><span class="token punctuation">:</span> phpmyadmin/phpmyadmin
+<span class="token key atrule">container_name</span><span class="token punctuation">:</span> phpmyadmin
+<span class="token key atrule">links</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> plate<span class="token punctuation">-</span>mysql<span class="token punctuation">:</span>plate<span class="token punctuation">-</span>mysql
+<span class="token key atrule">ports</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token string">&quot;8888:80&quot;</span>
+<span class="token key atrule">environment</span><span class="token punctuation">:</span>
+<span class="token key atrule">MYSQL_USER</span><span class="token punctuation">:</span> root
+<span class="token key atrule">MYSQL_ROOT_PASSWORD</span><span class="token punctuation">:</span> <span class="token number">123456</span>
+<span class="token key atrule">PMA_HOST</span><span class="token punctuation">:</span> plate<span class="token punctuation">-</span>mysql
+<span class="token key atrule">PMA_PORT</span><span class="token punctuation">:</span> <span class="token number">3306</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br></div></div><p>mysql 下的 Dockerfile</p> <div class="language-Dockerfile line-numbers-mode"><pre class="language-dockerfile"><code><span class="token keyword">FROM</span> mysql<span class="token punctuation">:</span>5.6
+<span class="token comment">#设置免密登录</span>
+<span class="token keyword">ENV</span> MYSQL_ALLOW_EMPTY_PASSWORD yes
+<span class="token comment">#将所需文件放到容器中</span>
+<span class="token keyword">COPY</span> setup.sh /mysql/setup.sh
+<span class="token keyword">COPY</span> schema.sql /mysql/schema.sql
+<span class="token keyword">COPY</span> privileges.sql /mysql/privileges.sql
+<span class="token comment">#设置容器启动时执行的命令</span>
+<span class="token keyword">CMD</span> <span class="token punctuation">[</span><span class="token string">&quot;sh&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;/mysql/setup.sh&quot;</span><span class="token punctuation">]</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>setup.sh</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token shebang important">#!/bin/bash</span>
+<span class="token builtin class-name">set</span> -e
+<span class="token comment">#查看mysql服务的状态，方便调试，这条语句可以删除</span>
+<span class="token builtin class-name">echo</span> <span class="token variable"><span class="token variable">`</span><span class="token function">service</span> mysql status<span class="token variable">`</span></span>
+<span class="token builtin class-name">echo</span> <span class="token string">'1.启动mysql....'</span>
+<span class="token comment">#启动mysql</span>
+<span class="token function">service</span> mysql start
+<span class="token function">sleep</span> <span class="token number">3</span>
+<span class="token builtin class-name">echo</span> <span class="token variable"><span class="token variable">`</span><span class="token function">service</span> mysql status<span class="token variable">`</span></span>
+<span class="token builtin class-name">echo</span> <span class="token string">'2.开始导入数据....'</span>
+<span class="token comment">#导入数据</span>
+mysql <span class="token operator">&lt;</span> /mysql/schema.sql
+<span class="token builtin class-name">echo</span> <span class="token string">'3.导入数据完毕....'</span>
+<span class="token function">sleep</span> <span class="token number">3</span>
+<span class="token builtin class-name">echo</span> <span class="token variable"><span class="token variable">`</span><span class="token function">service</span> mysql status<span class="token variable">`</span></span>
+<span class="token comment">#重新设置mysql密码</span>
+<span class="token builtin class-name">echo</span> <span class="token string">'4.开始修改密码....'</span>
+mysql <span class="token operator">&lt;</span> /mysql/privileges.sql
+<span class="token builtin class-name">echo</span> <span class="token string">'5.修改密码完毕....'</span>
+<span class="token comment">#sleep 3</span>
+<span class="token builtin class-name">echo</span> <span class="token variable"><span class="token variable">`</span><span class="token function">service</span> mysql status<span class="token variable">`</span></span>
+<span class="token builtin class-name">echo</span> <span class="token variable"><span class="token variable">`</span>mysql容器启动完毕,且数据导入成功<span class="token variable">`</span></span>
+<span class="token function">tail</span> -f /dev/null
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br></div></div><p>解决方案
+真正的问题所在其实就是在服务器上的 volume 目录/home/data 和容器里目录/var/lib/mysql 拥有者不一样导致的，那么如何查看拥有者，需要使用如下几条指令
+查看容器中/var/lib/mysql 的所有者</p> <p>docker run -ti --rm --entrypoint=&quot;/bin/bash&quot; plate_plate-mysql -c &quot;ls -la /var/lib/mysql&quot;</p> <p>可以从图中看出来这个目录的所有者是 mysql 用户组
+查看服务器中/home/data 的所有者</p> <p>ls -la /home/data</p> <p>在 systemd-bus-proxy 这个位置原来是 root，这里由于被我修改了所以是这样，也就是说，这两个目录的所有者不同导致的权限问题，现在把他们的 id 统一就可以了，统一前要先查出来容器里的 mysql 用户组 id，然后修改服务器的/home/data 下的用户组 id
+查出来容器里的 mysql 用户组 id</p> <p>docker run -ti --rm --entrypoint=&quot;/bin/bash&quot; plate_plate-mysql -c &quot;cat /etc/group&quot;</p> <p>可以看到 mysql 用户组的 id 为 999
+修改服务器文件用户组 id</p> <p>chown -R 999:999 /home/data</p> <p>修改后再去查看就如上图一样，权限变成了 systemd-bus-proxy，至于为什么没变成 mysql 呢，因为 999 是 docker 容器里面的权限 id，不是服务器的，所以服务器不识别也是自然的，之后再重启，执行
+docker-compose build &amp;&amp; docker-compose up -d</p> <p>就不会再有报错了</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>版权声明：本文为博主原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接和本声明。
+本文链接：http://blog.csdn.net/grape875499765/article/details/80089853</p></div></div></article> <section class="post-meta main-div" data-v-4e23451f><section class="post-date clearfix" data-v-4e23451f><span class="create-date" data-v-4e23451f>
+      发布时间 : 2020-09-23
+    </span> <span class="update-date" data-v-4e23451f>
+      最后修改 : 2020-09-23
+    </span></section> <section class="post-links" data-v-4e23451f><a href="/posts/2020/09/22/the-girl-folded-by-hot-style.html" class="post-link" data-v-4e23451f>
+      上一篇 : 被爆款折叠的女孩(笔记)
+    </a> <!----></section></section> <div id="post-comments" class="main-div"><!----></div></div></main> <aside class="aside" data-v-4dd605a1><div class="info-card main-div" data-v-9d847660 data-v-4dd605a1><div class="info-card-header" style="background-size:cover;background-repeat:no-repeat;background-position:center;background-attachment:scroll;background-image:url(/assets/img/bg-info.jpg);" data-v-9d847660><img src="/assets/img/avatar.jpg" alt="MyNetdisk" class="info-avatar" data-v-9d847660></div> <div class="info-card-body" data-v-9d847660><section class="info-nickname" data-v-9d847660>
+      MyNetdisk
+    </section> <section class="info-desc" data-v-9d847660>Happy Coding<br/>Happy Life</section> <section class="info-contact" data-v-9d847660><section data-v-9d847660><span title="changsha City, China" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>changsha City, China</title><use xlink:href="#icon-location" data-v-9d847660 data-v-9d847660></use></svg><span class="info-text" data-v-9d847660 data-v-9d847660>
+          changsha City, China
+        </span></span></section> <section data-v-9d847660><span title="OSSU University" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>OSSU University</title><use xlink:href="#icon-organization" data-v-9d847660 data-v-9d847660></use></svg><span class="info-text" data-v-9d847660 data-v-9d847660>
+          OSSU University
+        </span></span></section> <section data-v-9d847660><a href="mailto:myselfdisk@gmail.com" title="myselfdisk@gmail.com" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>myselfdisk@gmail.com</title><use xlink:href="#icon-email" data-v-9d847660 data-v-9d847660></use></svg><span class="info-text" data-v-9d847660 data-v-9d847660>
+          myselfdisk@gmail.com
+        </span></a></section></section></div> <div class="info-card-footer" data-v-9d847660><section class="info-sns clearfix" data-v-9d847660><a href="https://github.com/MyNetdisk" target="_blank" class="sns-link" data-v-9d847660><span title="GitHub: MyNetdisk" class="sns-icon" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1.5em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>GitHub: MyNetdisk</title><use xlink:href="#icon-github" data-v-9d847660 data-v-9d847660></use></svg></span></a></section></div></div> <div class="post-nav-card main-div" style="position:relative;top:0;width:0px;" data-v-4dd605a1><div class="post-nav-contents"><svg class="icon"><title>book</title><use xlink:href="#icon-book"></use></svg> <span>文章目录</span> <div class="post-nav-toc"><ul><li><a href="/posts/2020/09/23/docker-mysql-volume-permission-deny.html#问题">问题</a></li></ul></div></div> <div class="post-nav-comments"><svg class="icon"><title>comment</title><use xlink:href="#icon-comment"></use></svg> <a href="/posts/2020/09/23/docker-mysql-volume-permission-deny.html#post-comments">
+      评论
+    </a></div></div></aside></div> <footer class="footer" data-v-1375e54c><p class="footer-sns-links" data-v-1375e54c><a href="https://github.com/MyNetdisk" target="_blank" class="sns-link" data-v-1375e54c><span title="GitHub: MyNetdisk" class="sns-icon" data-v-1375e54c data-v-1375e54c><svg class="icon" style="font-size:25px;" data-v-1375e54c data-v-1375e54c><title data-v-1375e54c data-v-1375e54c>GitHub: MyNetdisk</title><use xlink:href="#icon-github" data-v-1375e54c data-v-1375e54c></use></svg></span></a></p> <p class="footer-text" data-v-1375e54c><span data-v-1375e54c>Powered by </span> <a href="https://github.com/vuejs/vuepress" target="_blank" data-v-1375e54c>
+      VuePress
+    </a> <span data-v-1375e54c> | </span> <a href="https://github.com/meteorlxy/vuepress-theme-meteorlxy" target="_blank" data-v-1375e54c>
+        meteorlxy
+      </a></p> <p class="footer-text" data-v-1375e54c>Copyright 2020-present <a href="https://github.com/MyNetdisk" target="_blank">MyNetdisk</a> | MIT License</p></footer></div><div class="global-ui"><!----><!----><canvas id="vuepress-canvas-ribbon"></canvas><div id="goTop" class="hide-cat" data-v-bf92849a></div><APlayer audio="" fixed="true" theme="#b7daff" loop="loop" order="list" preload="auto" volume="0.7" mutex="true" lrc-type="3" list-max-height="250" storage-name="vuepress-plugin-meting" id="aplayer-fixed"></APlayer><!----></div></div>
+    <script src="/assets/js/app.f150aa2b.js" defer></script><script src="/assets/js/10.d3ceb756.js" defer></script><script src="/assets/js/24.ad1f0446.js" defer></script><script src="/assets/js/8.ece81168.js" defer></script>
+  </body>
+</html>
