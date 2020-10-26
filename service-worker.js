@@ -27,11 +27,11 @@ self.addEventListener('message', (event) => {
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "d2a033f0c6fbc79d49e6b98fb9d085b1"
+    "revision": "b0296b4f3bb1b5355e1abd9cabcc42ca"
   },
   {
     "url": "about.html",
-    "revision": "ee5d421c6f3672d808d2e905539da8d9"
+    "revision": "ec9a2de21e891abfbbad3140becff124"
   },
   {
     "url": "assets/css/0.styles.f22f0a33.css",
@@ -158,8 +158,8 @@ self.__precacheManifest = [
     "revision": "8fd96c666fa8fa6cf24d37c85d5d9d07"
   },
   {
-    "url": "assets/js/12.d971c445.js",
-    "revision": "1394f57ecdd9d4b4531d1a7a732c8340"
+    "url": "assets/js/12.7a73e1dd.js",
+    "revision": "7bb63bf2b4526208ab4d0b76d88983be"
   },
   {
     "url": "assets/js/13.225ba54b.js",
@@ -194,12 +194,12 @@ self.__precacheManifest = [
     "revision": "7b63e108835481ade27f664a2a8d2f66"
   },
   {
-    "url": "assets/js/21.0184b03e.js",
-    "revision": "f2aadbaf09c88f4ae1e304146ef310c4"
+    "url": "assets/js/21.6a8906bf.js",
+    "revision": "57c3b44cc2882cc73362a81c2724de35"
   },
   {
-    "url": "assets/js/22.4b8f38db.js",
-    "revision": "51db9c2ae9a378794a7bef4fd247c28b"
+    "url": "assets/js/22.180a311e.js",
+    "revision": "18aff286bcb8cca3d774ef6ad9dfb8ed"
   },
   {
     "url": "assets/js/23.e8696b47.js",
@@ -226,8 +226,8 @@ self.__precacheManifest = [
     "revision": "cb019e54ebd3072be6fbe2f7ec9634fa"
   },
   {
-    "url": "assets/js/3.e4576da4.js",
-    "revision": "9e744def445c3f32d67a1f63817c3116"
+    "url": "assets/js/3.e885b950.js",
+    "revision": "b62bb86f6994767654ef948888e7e530"
   },
   {
     "url": "assets/js/4.2954f0d4.js",
@@ -254,120 +254,120 @@ self.__precacheManifest = [
     "revision": "2e41328ffe4745cfb3098cff8b50ac68"
   },
   {
-    "url": "assets/js/app.9a13f55a.js",
-    "revision": "5a24a5ab90ad80e891e11c7b674bfe4b"
+    "url": "assets/js/app.3519e241.js",
+    "revision": "b8dabc5d5b7e6a04e52219b2aed7fc5d"
   },
   {
     "url": "img/index.html",
-    "revision": "24aea88b470d8ca6d4caad408aba8694"
+    "revision": "4dc754a72e186546cacc17a0ffe71f17"
   },
   {
     "url": "index.html",
-    "revision": "d2e1d2d1812ba926310abc21dcb958d6"
+    "revision": "ff98f2f7ec98537686eb85b9dfe114b9"
   },
   {
     "url": "posts/2001/03/20/selfstudy-programming-vs-attend-training.html",
-    "revision": "d41416ff854a82c138ad924b699d184d"
+    "revision": "a96d2bc075b3027a425436b6d69d30de"
   },
   {
     "url": "posts/2020/03/17/the-github-action-implementation-is-automatically-released-to-the-cloud-server.html",
-    "revision": "8b65d84bdbbca7e1301f29e5d5a1aedc"
+    "revision": "e3630d2ea295570e7f0902465c10ae6f"
   },
   {
     "url": "posts/2020/04/05/china-s-real-estate-trend.html",
-    "revision": "772ef66e539de9c25282097ada08798e"
+    "revision": "ff3f2ad9508eff1f5ae2d9003984c10a"
   },
   {
     "url": "posts/2020/06/22/deploy-blog-using-github-action.html",
-    "revision": "54f11d4fb003f4465e1a66b301491a0a"
+    "revision": "4c8bd41aa88216cf552ba62d03677b5a"
   },
   {
     "url": "posts/2020/08/22/diary-one.html",
-    "revision": "2fd5cb35cf5ac24ee5008b5928d403ef"
+    "revision": "0e18399ecd588ee13e4500b0749152ed"
   },
   {
     "url": "posts/2020/09/02/a-shortcut-to-successful-public-speaking.html",
-    "revision": "992f5ef8bacec6c1b8c6a4a33d9880d9"
+    "revision": "d2da812d848050e582bcc6f0ce31230b"
   },
   {
     "url": "posts/2020/09/14/critical-dialogue.html",
-    "revision": "bb547cd234753f335ca43eb0b299f13a"
+    "revision": "389c04101479ea867b2e91138c138626"
   },
   {
     "url": "posts/2020/09/22/the-girl-folded-by-hot-style.html",
-    "revision": "a1e918e24134e08a99e84ad9a26fb91f"
+    "revision": "cab949a45481f8cc5581d45003049bd1"
   },
   {
     "url": "posts/2020/09/23/docker-mysql-volume-permission-deny.html",
-    "revision": "b22acad828bdd004f056773588ef7c43"
+    "revision": "5d253aed4bcfca2bca5d9894bc821018"
   },
   {
     "url": "posts/2020/10/07/talk-like-ted-2.html",
-    "revision": "3e19610256ee196d662096be549232b8"
+    "revision": "018e873b19e05c3afe07dfbdd7701d2a"
   },
   {
     "url": "posts/categories/diary.html",
-    "revision": "d90f42660877697b4e4b8ba0a51b262d"
+    "revision": "49dac4eacaaf52339fa1554610cc781a"
   },
   {
     "url": "posts/categories/essay.html",
-    "revision": "6694b30c21f2878d98518f900edabc16"
+    "revision": "f8747783c8eed9f43c7b449bd96bd79f"
   },
   {
     "url": "posts/categories/index.html",
-    "revision": "4e68ab0f83acc630e15f5d632ed441e2"
+    "revision": "b6fbec216bc931c8e0028c3fc69b399e"
   },
   {
     "url": "posts/categories/reprinted articles.html",
-    "revision": "48abb5ba5c36677cc21528e203b36d9b"
+    "revision": "a2f35ce594ca36e5868fb822d4f35675"
   },
   {
     "url": "posts/index.html",
-    "revision": "9f590d0249cda42a5e63e7e9eb7c680c"
+    "revision": "71fad1e6d6551694fd33bea5f3d32f15"
   },
   {
     "url": "posts/tags/chicken soup.html",
-    "revision": "7085004a72ef05e9e768d35c794b5ebc"
+    "revision": "daaed9473ac30e7b2430ba8724539c45"
   },
   {
     "url": "posts/tags/CI.html",
-    "revision": "8de95e164eaca12240f3735c4b849922"
+    "revision": "39ba8f05f2696f8ab43a527e2b0a24fc"
   },
   {
     "url": "posts/tags/diary.html",
-    "revision": "e2808b8380299c365e6922edb9b019fd"
+    "revision": "bf1dc6cf9cf7f1089125ffb3b7ccbb4b"
   },
   {
     "url": "posts/tags/docker.html",
-    "revision": "12fdadb4b2fb134f4c54280443bea89c"
+    "revision": "7a1b95e3052014c57ed995786e405659"
   },
   {
     "url": "posts/tags/Github.html",
-    "revision": "8ecba4b48e96fe6acd0f671db836407a"
+    "revision": "39b3719beee97e38c15f960ef9016404"
   },
   {
     "url": "posts/tags/index.html",
-    "revision": "97a76876a7433cd424898ebeac56aa7b"
+    "revision": "71498ff247f10ee824e2cd4aa76daaa6"
   },
   {
     "url": "posts/tags/investment.html",
-    "revision": "32f5587c181865542b70f03a307cedee"
+    "revision": "ee857dd44a91900636957124c7535b61"
   },
   {
     "url": "posts/tags/lecture.html",
-    "revision": "d439d99edda28687b8bcb1dcd7103ac1"
+    "revision": "5ce32d0106042afc60082e6664e4b3f4"
   },
   {
     "url": "posts/tags/programming.html",
-    "revision": "7ef12861291e2cec1aa1afbd62c2d969"
+    "revision": "e2335353dcf8b40f06593de2ef54c0a3"
   },
   {
     "url": "posts/tags/reading.html",
-    "revision": "01de4e0d5763d3589e8639ad18c82cfb"
+    "revision": "57d2e43f9828bff157c541e814bd9bb3"
   },
   {
     "url": "posts/tags/TED.html",
-    "revision": "ef9e5f44c1eb020df47ff028cfbbc734"
+    "revision": "3b616df0417f0ccfcf0efc1dce17aa27"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
