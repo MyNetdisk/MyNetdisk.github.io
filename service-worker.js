@@ -27,15 +27,15 @@ self.addEventListener('message', (event) => {
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "ecad3be574ce26f490d6ead0b46928af"
+    "revision": "cbd6b4caa308bb669ce3557080bb05ac"
   },
   {
     "url": "about.html",
-    "revision": "38929c9a3c88e2c3ba27771d7db48bbc"
+    "revision": "3e54695d07fa573d2fdff8ac9fc0b5a5"
   },
   {
-    "url": "assets/css/0.styles.93a4d75c.css",
-    "revision": "f3e6821f36a02db28ac6171732042009"
+    "url": "assets/css/0.styles.0b8a852a.css",
+    "revision": "21fc2107206d7e2fca95d1cd937acebf"
   },
   {
     "url": "assets/icon/icon-128x128.png",
@@ -254,120 +254,120 @@ self.__precacheManifest = [
     "revision": "2e41328ffe4745cfb3098cff8b50ac68"
   },
   {
-    "url": "assets/js/app.f5e22423.js",
-    "revision": "374113010b1177e56babef5956c52118"
+    "url": "assets/js/app.092cc3df.js",
+    "revision": "9cc7b5a4355e5954d8a5e9ed17653251"
   },
   {
     "url": "img/index.html",
-    "revision": "7f5274ef596caddd5eb64026def3a72e"
+    "revision": "14971d4888b3b16ceb227a5352a58306"
   },
   {
     "url": "index.html",
-    "revision": "c62f8b759a70b905edf762856dbcabb8"
+    "revision": "668aca80ae3fd9de06d3a89af02c135f"
   },
   {
     "url": "posts/2001/03/20/selfstudy-programming-vs-attend-training.html",
-    "revision": "b1ea29fcad2b662bdd3a7d1fbac16ebb"
+    "revision": "5f5722216b29973875286eb6f540963d"
   },
   {
     "url": "posts/2020/03/17/the-github-action-implementation-is-automatically-released-to-the-cloud-server.html",
-    "revision": "078ec9d3fc9e5588b61df6d0647906f7"
+    "revision": "29cda88950b2ecb59822fe5d01ca7005"
   },
   {
     "url": "posts/2020/04/05/china-s-real-estate-trend.html",
-    "revision": "8e5c4907d634d5157050fd76d28ea417"
+    "revision": "9908e4e33a1b1cd5ad31d54ed95bac10"
   },
   {
     "url": "posts/2020/06/22/deploy-blog-using-github-action.html",
-    "revision": "7314ec0cfb7d0304b4767d25a4d734d1"
+    "revision": "7ad269c8afe58a5aa2e6c48721546315"
   },
   {
     "url": "posts/2020/08/22/diary-one.html",
-    "revision": "5225509b7a64bcdd0fe54e38a5d48c06"
+    "revision": "840ed82160ca0a7a28b43c2b6f40af92"
   },
   {
     "url": "posts/2020/09/02/a-shortcut-to-successful-public-speaking.html",
-    "revision": "04f32f8c276085e7e2ab36d94254b4af"
+    "revision": "2b2a45d807cc6ad0dc5077532405af7b"
   },
   {
     "url": "posts/2020/09/14/critical-dialogue.html",
-    "revision": "ba4a7f9aaf67a5e6e23fb7eff74867eb"
+    "revision": "a3b48df49c359ddc7823f1fce79da4cd"
   },
   {
     "url": "posts/2020/09/22/the-girl-folded-by-hot-style.html",
-    "revision": "1884a58d055f5b2640b31c3cf935d051"
+    "revision": "a97ea9ef04b50e7b70b81848dc3edcbc"
   },
   {
     "url": "posts/2020/09/23/docker-mysql-volume-permission-deny.html",
-    "revision": "b5d95bfdd95686b54ae28651c84f4fd4"
+    "revision": "b82e0b317a3724b771af880018be5356"
   },
   {
     "url": "posts/2020/10/07/talk-like-ted-2.html",
-    "revision": "35c21b7fd0ec863b0e2db7a77120b415"
+    "revision": "1b0c4d8749524fffd048987e374d6d33"
   },
   {
     "url": "posts/categories/diary.html",
-    "revision": "a11936ba81e45e8352e2580dfc308772"
+    "revision": "068e463d44e98d56da25b01bac7c7722"
   },
   {
     "url": "posts/categories/essay.html",
-    "revision": "031139415d8a0469630154d234dac4b9"
+    "revision": "6fb346de743b9f4d953ced47097cef4f"
   },
   {
     "url": "posts/categories/index.html",
-    "revision": "e6df39c94245a29c9c381628c887e77b"
+    "revision": "e72ede1dc7b90b133a00c8db8f368b17"
   },
   {
     "url": "posts/categories/reprinted articles.html",
-    "revision": "b64e12205ad9ebebca1372fa764cad47"
+    "revision": "cbe9728b4279f62e174c63400b027af0"
   },
   {
     "url": "posts/index.html",
-    "revision": "d5cf8c1ce9b64ab83cabb3b35c950fa5"
+    "revision": "027694ec4060f06bb1d46dcdb5e18e44"
   },
   {
     "url": "posts/tags/chicken soup.html",
-    "revision": "5a4193f770d92e1b6806b0c9bc0dca79"
+    "revision": "770e66679d636d808faeacd464e51e9c"
   },
   {
     "url": "posts/tags/CI.html",
-    "revision": "d23f4a41185f888607cb06fd448060df"
+    "revision": "0144ea50c91ae7a43631610ff9760610"
   },
   {
     "url": "posts/tags/diary.html",
-    "revision": "6cc6f639eaed713cb86dde573dbe9f59"
+    "revision": "b5d6ce30d432c204f1a0cb75f6dc0d28"
   },
   {
     "url": "posts/tags/docker.html",
-    "revision": "8886c7095c68a72fcb38e4bcefe751e5"
+    "revision": "0275d6010639ed7f1d7dacfa1735b46b"
   },
   {
     "url": "posts/tags/Github.html",
-    "revision": "35d5a58bb84a669d0bf987f5d4d05de0"
+    "revision": "9248cac6d11ae1a7de359c518ba86112"
   },
   {
     "url": "posts/tags/index.html",
-    "revision": "3065eeaf2b3abd847fe651b82c5f5e14"
+    "revision": "debebd1f3d7b144dfc85ddcc12580052"
   },
   {
     "url": "posts/tags/investment.html",
-    "revision": "1672666133923f5b558399409afa7e65"
+    "revision": "e07ad7abfe7a8b0b898a5f4b66fa71f3"
   },
   {
     "url": "posts/tags/lecture.html",
-    "revision": "d68019203ee769e8c93261d901b8d872"
+    "revision": "e83bb38e0629b8b796729d3fb82e185a"
   },
   {
     "url": "posts/tags/programming.html",
-    "revision": "46659be16abe0931d404cc65d2b68848"
+    "revision": "42902726fe5fd2b435114eccc8361637"
   },
   {
     "url": "posts/tags/reading.html",
-    "revision": "d7987ccbc21d261bf3f1ef6a66ef4441"
+    "revision": "aa8ec9ea8840ea891b8d43f902b5eb99"
   },
   {
     "url": "posts/tags/TED.html",
-    "revision": "8cc5f2777c630084167b695a47e87195"
+    "revision": "af66c4f5e007bd17c3fb5a54ca944e5c"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
