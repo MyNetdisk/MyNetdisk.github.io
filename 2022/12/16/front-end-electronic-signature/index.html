@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            前端实现电子签名（web、移动端）通用组件
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">前端实现电子签名（web、移动端）通用组件</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2022-12-16
+                        </span>
+                        
+                            <span id="/2022/12/16/front-end-electronic-signature/" class="leancloud_visitors" data-flag-title="前端实现电子签名（web、移动端）通用组件">
+                                <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                            </span>
+                        
+                        <span>
+                            <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2022/12/16/front-end-electronic-signature/"></span>
+                        </span>  
+                    </p>
+                    
+                        
+                            <span class="category-color">Front-end</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">web</span>
+                        
+                            <span class="tag-color">移动端</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>在现在的时代发展中，从以前的手写签名，逐渐衍生出了电子签名。电子签名和纸质手写签名一样具有法律效应。电子签名目前主要还是在需要个人确认的产品环节和司法类相关的产品上较多。</p>
+<p>举个常用的例子，大家都用过钉钉，钉钉上面就有电子签名，相信大家这肯定是知道的。</p>
+<p>那作为前端的我们如何实现电子签名呢？其实在 html5 中已经出现了一个重要级别的辅助标签，是啥呢？那就是 canvas[2]。</p>
+</blockquote>
+<h3 id="什么是-canvas"><a href="#什么是-canvas" class="headerlink" title="什么是 canvas"></a>什么是 canvas</h3><p><code>Canvas（画布）</code>[3]是在 HTML5 中新增的标签用于在网页实时生成图像，并且可以操作图像内容，基本上它是一个可以用 JavaScript 操作的位图（bitmap）。Canvas 对象表示一个 HTML 画布元素 -。它没有自己的行为，但是定义了一个 API 支持脚本化客户端绘图操作。</p>
+<p>大白话就是 canvas 是一个可以在上面通过 javaScript 画图的标签，通过其提供的 context(上下文)及 Api 进行绘制，在这个过程中 canvas 充当画布的角色。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">canvas</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h3><p>canvas 给我们提供了很多的 Api，供我们使用，我们只需要在 body 标签中创建一个 canvas 标签，在 script 标签中拿到 canvas 这个标签的节点，并创建 context(上下文)就可以使用了。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">canvas</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 获取canvas 实例</span></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> canvas = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;canvas&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">  canvas.<span class="title function_">getContext</span>(<span class="string">&quot;2d&quot;</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>步入正题。</p>
+<h3 id="实现电子签名"><a href="#实现电子签名" class="headerlink" title="实现电子签名"></a>实现电子签名</h3><p>知道几何的朋友都很清楚，线有点绘成，面由线绘成。</p>
+<p>多点成线，多线成面。</p>
+<p>所以我们实际只需要拿到当前触摸的坐标点，进行成线处理就可以了。</p>
+<p>在 body 中添加 canvas 标签<br>在这里我们不仅需要在在 body 中添加 canvas 标签，我们还需要添加两个按钮，分别是取消和保存（后面我们会用到）。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">canvas</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>取消<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>保存<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="添加文件"><a href="#添加文件" class="headerlink" title="添加文件"></a>添加文件</h3><p>我这里全程使用 js 进行样式设置及添加。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 配置内容</span></span><br><span class="line"><span class="keyword">const</span> config = &#123;</span><br><span class="line">  <span class="attr">width</span>: <span class="number">400</span>, <span class="comment">// 宽度</span></span><br><span class="line">  <span class="attr">height</span>: <span class="number">200</span>, <span class="comment">// 高度</span></span><br><span class="line">  <span class="attr">lineWidth</span>: <span class="number">5</span>, <span class="comment">// 线宽</span></span><br><span class="line">  <span class="attr">strokeStyle</span>: <span class="string">&quot;red&quot;</span>, <span class="comment">// 线条颜色</span></span><br><span class="line">  <span class="attr">lineCap</span>: <span class="string">&quot;round&quot;</span>, <span class="comment">// 设置线条两端圆角</span></span><br><span class="line">  <span class="attr">lineJoin</span>: <span class="string">&quot;round&quot;</span>, <span class="comment">// 线条交汇处圆角</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取-canvas-实例"><a href="#获取-canvas-实例" class="headerlink" title="获取 canvas 实例"></a>获取 canvas 实例</h3><p>这里我们使用 querySelector 获取 canvas 的 dom 实例，并设置样式和创建上下文。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取canvas 实例</span></span><br><span class="line"><span class="keyword">const</span> canvas = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;canvas&quot;</span>);</span><br><span class="line"><span class="comment">// 设置宽高</span></span><br><span class="line">canvas.<span class="property">width</span> = config.<span class="property">width</span>;</span><br><span class="line">canvas.<span class="property">height</span> = config.<span class="property">height</span>;</span><br><span class="line"><span class="comment">// 设置一个边框，方便我们查看及使用</span></span><br><span class="line">canvas.<span class="property">style</span>.<span class="property">border</span> = <span class="string">&quot;1px solid #000&quot;</span>;</span><br><span class="line"><span class="comment">// 创建上下文</span></span><br><span class="line"><span class="keyword">const</span> ctx = canvas.<span class="title function_">getContext</span>(<span class="string">&quot;2d&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="基础设置"><a href="#基础设置" class="headerlink" title="基础设置"></a>基础设置</h3><p>我们将 canvas 的填充色为透明，并绘制填充一个矩形，作为我们的画布，如果不设置这个填充背景色，在我们初识渲染的时候是一个黑色背景，这也是它的一个默认色。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置填充背景色</span></span><br><span class="line">ctx.<span class="property">fillStyle</span> = <span class="string">&quot;transparent&quot;</span>;</span><br><span class="line"><span class="comment">// 绘制填充矩形</span></span><br><span class="line">ctx.<span class="title function_">fillRect</span>(</span><br><span class="line">  <span class="number">0</span>, <span class="comment">// x 轴起始绘制位置</span></span><br><span class="line">  <span class="number">0</span>, <span class="comment">// y 轴起始绘制位置</span></span><br><span class="line">  config.<span class="property">width</span>, <span class="comment">// 宽度</span></span><br><span class="line">  config.<span class="property">height</span> <span class="comment">// 高度</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="上次绘制路径保存"><a href="#上次绘制路径保存" class="headerlink" title="上次绘制路径保存"></a>上次绘制路径保存</h3><p>这里我们需要声明一个对象，用来记录我们上一次绘制的路径结束坐标点及偏移量。</p>
+<ul>
+<li>保存上次坐标点这个我不用说大家都懂；</li>
+<li>为啥需要保存偏移量呢，因为鼠标和画布上的距离是存在一定的偏移距离，在我们绘制的过程中需要减去这个偏移量，才是我们实际的绘制坐标。</li>
+<li>但我发现 chrome 中不需要减去这个偏移量，拿到的就是实际的坐标，之前在微信小程序中使用就需要减去偏移量，需要在小程序中使用的朋友需要注意这一点哦。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 保存上次绘制的 坐标及偏移量</span></span><br><span class="line"><span class="keyword">const</span> client = &#123;</span><br><span class="line">  <span class="attr">offsetX</span>: <span class="number">0</span>, <span class="comment">// 偏移量</span></span><br><span class="line">  <span class="attr">offsetY</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">endX</span>: <span class="number">0</span>, <span class="comment">// 坐标</span></span><br><span class="line">  <span class="attr">endY</span>: <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="设备兼容"><a href="#设备兼容" class="headerlink" title="设备兼容"></a>设备兼容</h3><p>我们需要它不仅可以在 web 端使用，还需要在移动端使用，我们需要给它做设备兼容处理。我们通过调用 navigator.userAgent 获取当前设备信息，进行正则匹配判断。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 判断是否为移动端</span></span><br><span class="line"><span class="keyword">const</span> mobileStatus = <span class="regexp">/Mobile|Android|iPhone/i</span>.<span class="title function_">test</span>(navigator.<span class="property">userAgent</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>这里我们在监听鼠标按下(mousedown)(web 端)&#x2F;触摸开始(touchstart)的时候进行初始化，事件监听采用 addEventListener。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建鼠标/手势按下监听器</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(mobileStatus ? <span class="string">&quot;touchstart&quot;</span> : <span class="string">&quot;mousedown&quot;</span>, init);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>三元判断说明： 这里当 mobileStatus 为 true 时则表示为移动端，反之则为 web 端，后续使用到的三元依旧是这个意思。</p>
+</blockquote>
+<h3 id="声明初始化方法"><a href="#声明初始化方法" class="headerlink" title="声明初始化方法"></a>声明初始化方法</h3><p>我们添加一个 init 方法作为监听鼠标按下&#x2F;触摸开始的回调方法。<br>这里我们需要获取到当前鼠标按下&#x2F;触摸开始的偏移量和坐标，进行起始点绘制。</p>
+<blockquote>
+<p>Tips：web 端可以直接通过 event 中取到，而移动端则需要在 event.changedTouches[0]中取到。</p>
+</blockquote>
+<p>这里我们在初始化后再监听鼠标的移动。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">init</span> = (<span class="params">event</span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 获取偏移量及坐标</span></span><br><span class="line">  <span class="keyword">const</span> &#123; offsetX, offsetY, pageX, pageY &#125; = mobileStatus</span><br><span class="line">    ? event.<span class="property">changedTouches</span>[<span class="number">0</span>]</span><br><span class="line">    : event;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 修改上次的偏移量及坐标</span></span><br><span class="line">  client.<span class="property">offsetX</span> = offsetX;</span><br><span class="line">  client.<span class="property">offsetY</span> = offsetY;</span><br><span class="line">  client.<span class="property">endX</span> = pageX;</span><br><span class="line">  client.<span class="property">endY</span> = pageY;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 清除以上一次 beginPath 之后的所有路径，进行绘制</span></span><br><span class="line">  ctx.<span class="title function_">beginPath</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 根据配置文件设置进行相应配置</span></span><br><span class="line">  ctx.<span class="property">lineWidth</span> = config.<span class="property">lineWidth</span>;</span><br><span class="line">  ctx.<span class="property">strokeStyle</span> = config.<span class="property">strokeStyle</span>;</span><br><span class="line">  ctx.<span class="property">lineCap</span> = config.<span class="property">lineCap</span>;</span><br><span class="line">  ctx.<span class="property">lineJoin</span> = config.<span class="property">lineJoin</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置画线起始点位</span></span><br><span class="line">  ctx.<span class="title function_">moveTo</span>(client.<span class="property">endX</span>, client.<span class="property">endY</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听 鼠标移动或手势移动</span></span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(mobileStatus ? <span class="string">&quot;touchmove&quot;</span> : <span class="string">&quot;mousemove&quot;</span>, draw);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h3><p>这里我们添加绘制 draw 方法，作为监听鼠标移动&#x2F;触摸移动的回调方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绘制</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">draw</span> = (<span class="params">event</span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 获取当前坐标点位</span></span><br><span class="line">  <span class="keyword">const</span> &#123; pageX, pageY &#125; = mobileStatus ? event.<span class="property">changedTouches</span>[<span class="number">0</span>] : event;</span><br><span class="line">  <span class="comment">// 修改最后一次绘制的坐标点</span></span><br><span class="line">  client.<span class="property">endX</span> = pageX;</span><br><span class="line">  client.<span class="property">endY</span> = pageY;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 根据坐标点位移动添加线条</span></span><br><span class="line">  ctx.<span class="title function_">lineTo</span>(pageX, pageY);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 绘制</span></span><br><span class="line">  ctx.<span class="title function_">stroke</span>();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结束绘制"><a href="#结束绘制" class="headerlink" title="结束绘制"></a>结束绘制</h3><p>添加了监听鼠标移动&#x2F;触摸移动我们一定要记得取消监听并结束绘制，不然的话它会一直监听并绘制的。</p>
+<p>这里我们创建一个 cloaseDraw 方法作为鼠标弹起&#x2F;结束触摸的回调方法来结束绘制并移除鼠标移动&#x2F;触摸移动的监听。</p>
+<p>canvas 结束绘制则需要调用 closePath()让其结束绘制</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 结束绘制</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">cloaseDraw</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 结束绘制</span></span><br><span class="line">  ctx.<span class="title function_">closePath</span>();</span><br><span class="line">  <span class="comment">// 移除鼠标移动或手势移动监听器</span></span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&quot;mousemove&quot;</span>, draw);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>添加结束回调监听器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建鼠标/手势 弹起/离开 监听器</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(mobileStatus ? <span class="string">&quot;touchend&quot;</span> : <span class="string">&quot;mouseup&quot;</span>, cloaseDraw);</span><br></pre></td></tr></table></figure>
+
+<p>ok，现在我们的电子签名功能还差一丢丢可以实现完了，现在已经可以正常的签名了。</p>
+<p>我们来看一下效果：</p>
+<h3 id="取消功能-x2F-清空画布"><a href="#取消功能-x2F-清空画布" class="headerlink" title="取消功能&#x2F;清空画布"></a>取消功能&#x2F;清空画布</h3><p>我们在刚开始创建的那两个按钮开始排上用场了。</p>
+<p>这里我们创建一个 cancel 的方法作为取消并清空画布使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取消-清空画布</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">cancel</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 清空当前画布上的所有绘制内容</span></span><br><span class="line">  ctx.<span class="title function_">clearRect</span>(<span class="number">0</span>, <span class="number">0</span>, config.<span class="property">width</span>, config.<span class="property">height</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们将这个方法和取消按钮进行绑定</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;cancel()&quot;</span>&gt;</span>取消<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="保存功能"><a href="#保存功能" class="headerlink" title="保存功能"></a>保存功能</h3><p>这里我们创建一个 save 的方法作为保存画布上的内容使用。</p>
+<p>将画布上的内容保存为图片&#x2F;文件的方法有很多，比较常见的是 blob 和 toDataURL 这两种方案，但 toDataURL 这哥们没 blob 强，适配也不咋滴。所以我们这里采用 a 标签 ➕ blob 方案实现图片的保存下载。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 保存-将画布内容保存为图片</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">save</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 将canvas上的内容转成blob流</span></span><br><span class="line">  canvas.<span class="title function_">toBlob</span>(<span class="function">(<span class="params">blob</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 获取当前时间并转成字符串，用来当做文件名</span></span><br><span class="line">    <span class="keyword">const</span> date = <span class="title class_">Date</span>.<span class="title function_">now</span>().<span class="title function_">toString</span>();</span><br><span class="line">    <span class="comment">// 创建一个 a 标签</span></span><br><span class="line">    <span class="keyword">const</span> a = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    <span class="comment">// 设置 a 标签的下载文件名</span></span><br><span class="line">    a.<span class="property">download</span> = <span class="string">`<span class="subst">$&#123;date&#125;</span>.png`</span>;</span><br><span class="line">    <span class="comment">// 设置 a 标签的跳转路径为 文件流地址</span></span><br><span class="line">    a.<span class="property">href</span> = <span class="variable constant_">URL</span>.<span class="title function_">createObjectURL</span>(blob);</span><br><span class="line">    <span class="comment">// 手动触发 a 标签的点击事件</span></span><br><span class="line">    a.<span class="title function_">click</span>();</span><br><span class="line">    <span class="comment">// 移除 a 标签</span></span><br><span class="line">    a.<span class="title function_">remove</span>();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们将这个方法和保存按钮进行绑定</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;save()&quot;</span>&gt;</span>保存<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们将刚刚绘制的内容进行保存，点击保存按钮，就会进行下载保存</p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      * &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;cancel()&quot;</span>&gt;</span>取消<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;save()&quot;</span>&gt;</span>保存<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 配置内容</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> config = &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="attr">width</span>: <span class="number">400</span>, <span class="comment">// 宽度</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">height</span>: <span class="number">200</span>, <span class="comment">// 高度</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">lineWidth</span>: <span class="number">5</span>, <span class="comment">// 线宽</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">strokeStyle</span>: <span class="string">&quot;red&quot;</span>, <span class="comment">// 线条颜色</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">lineCap</span>: <span class="string">&quot;round&quot;</span>, <span class="comment">// 设置线条两端圆角</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">lineJoin</span>: <span class="string">&quot;round&quot;</span>, <span class="comment">// 线条交汇处圆角</span></span></span><br><span class="line"><span class="language-javascript">    &#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 获取canvas 实例</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> canvas = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;canvas&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 设置宽高</span></span></span><br><span class="line"><span class="language-javascript">    canvas.<span class="property">width</span> = config.<span class="property">width</span>;</span></span><br><span class="line"><span class="language-javascript">    canvas.<span class="property">height</span> = config.<span class="property">height</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 设置一个边框</span></span></span><br><span class="line"><span class="language-javascript">    canvas.<span class="property">style</span>.<span class="property">border</span> = <span class="string">&quot;1px solid #000&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 创建上下文</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> ctx = canvas.<span class="title function_">getContext</span>(<span class="string">&quot;2d&quot;</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 设置填充背景色</span></span></span><br><span class="line"><span class="language-javascript">    ctx.<span class="property">fillStyle</span> = <span class="string">&quot;transparent&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 绘制填充矩形</span></span></span><br><span class="line"><span class="language-javascript">    ctx.<span class="title function_">fillRect</span>(</span></span><br><span class="line"><span class="language-javascript">      <span class="number">0</span>, <span class="comment">// x 轴起始绘制位置</span></span></span><br><span class="line"><span class="language-javascript">      <span class="number">0</span>, <span class="comment">// y 轴起始绘制位置</span></span></span><br><span class="line"><span class="language-javascript">      config.<span class="property">width</span>, <span class="comment">// 宽度</span></span></span><br><span class="line"><span class="language-javascript">      config.<span class="property">height</span> <span class="comment">// 高度</span></span></span><br><span class="line"><span class="language-javascript">    );</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 保存上次绘制的 坐标及偏移量</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> client = &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="attr">offsetX</span>: <span class="number">0</span>, <span class="comment">// 偏移量</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">offsetY</span>: <span class="number">0</span>,</span></span><br><span class="line"><span class="language-javascript">      <span class="attr">endX</span>: <span class="number">0</span>, <span class="comment">// 坐标</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">endY</span>: <span class="number">0</span>,</span></span><br><span class="line"><span class="language-javascript">    &#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 判断是否为移动端</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> mobileStatus = <span class="regexp">/Mobile|Android|iPhone/i</span>.<span class="title function_">test</span>(navigator.<span class="property">userAgent</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 初始化</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> <span class="title function_">init</span> = (<span class="params">event</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 获取偏移量及坐标</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> &#123; offsetX, offsetY, pageX, pageY &#125; = mobileStatus</span></span><br><span class="line"><span class="language-javascript">        ? event.<span class="property">changedTouches</span>[<span class="number">0</span>]</span></span><br><span class="line"><span class="language-javascript">        : event;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 修改上次的偏移量及坐标</span></span></span><br><span class="line"><span class="language-javascript">      client.<span class="property">offsetX</span> = offsetX;</span></span><br><span class="line"><span class="language-javascript">      client.<span class="property">offsetY</span> = offsetY;</span></span><br><span class="line"><span class="language-javascript">      client.<span class="property">endX</span> = pageX;</span></span><br><span class="line"><span class="language-javascript">      client.<span class="property">endY</span> = pageY;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 清除以上一次 beginPath 之后的所有路径，进行绘制</span></span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="title function_">beginPath</span>();</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 根据配置文件设置相应配置</span></span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="property">lineWidth</span> = config.<span class="property">lineWidth</span>;</span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="property">strokeStyle</span> = config.<span class="property">strokeStyle</span>;</span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="property">lineCap</span> = config.<span class="property">lineCap</span>;</span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="property">lineJoin</span> = config.<span class="property">lineJoin</span>;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 设置画线起始点位</span></span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="title function_">moveTo</span>(client.<span class="property">endX</span>, client.<span class="property">endY</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 监听 鼠标移动或手势移动</span></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(mobileStatus ? <span class="string">&quot;touchmove&quot;</span> : <span class="string">&quot;mousemove&quot;</span>, draw);</span></span><br><span class="line"><span class="language-javascript">    &#125;;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 绘制</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> <span class="title function_">draw</span> = (<span class="params">event</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 获取当前坐标点位</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> &#123; pageX, pageY &#125; = mobileStatus ? event.<span class="property">changedTouches</span>[<span class="number">0</span>] : event;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 修改最后一次绘制的坐标点</span></span></span><br><span class="line"><span class="language-javascript">      client.<span class="property">endX</span> = pageX;</span></span><br><span class="line"><span class="language-javascript">      client.<span class="property">endY</span> = pageY;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 根据坐标点位移动添加线条</span></span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="title function_">lineTo</span>(pageX, pageY);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 绘制</span></span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="title function_">stroke</span>();</span></span><br><span class="line"><span class="language-javascript">    &#125;;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 结束绘制</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> <span class="title function_">cloaseDraw</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 结束绘制</span></span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="title function_">closePath</span>();</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 移除鼠标移动或手势移动监听器</span></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&quot;mousemove&quot;</span>, draw);</span></span><br><span class="line"><span class="language-javascript">    &#125;;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 创建鼠标/手势按下监听器</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(mobileStatus ? <span class="string">&quot;touchstart&quot;</span> : <span class="string">&quot;mousedown&quot;</span>, init);</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 创建鼠标/手势 弹起/离开 监听器</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(mobileStatus ? <span class="string">&quot;touchend&quot;</span> : <span class="string">&quot;mouseup&quot;</span>, cloaseDraw);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 取消-清空画布</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> <span class="title function_">cancel</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 清空当前画布上的所有绘制内容</span></span></span><br><span class="line"><span class="language-javascript">      ctx.<span class="title function_">clearRect</span>(<span class="number">0</span>, <span class="number">0</span>, config.<span class="property">width</span>, config.<span class="property">height</span>);</span></span><br><span class="line"><span class="language-javascript">    &#125;;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 保存-将画布内容保存为图片</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> <span class="title function_">save</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 将canvas上的内容转成blob流</span></span></span><br><span class="line"><span class="language-javascript">      canvas.<span class="title function_">toBlob</span>(<span class="function">(<span class="params">blob</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 获取当前时间并转成字符串，用来当做文件名</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> date = <span class="title class_">Date</span>.<span class="title function_">now</span>().<span class="title function_">toString</span>();</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 创建一个 a 标签</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> a = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;a&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 设置 a 标签的下载文件名</span></span></span><br><span class="line"><span class="language-javascript">        a.<span class="property">download</span> = <span class="string">`<span class="subst">$&#123;date&#125;</span>.png`</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 设置 a 标签的跳转路径为 文件流地址</span></span></span><br><span class="line"><span class="language-javascript">        a.<span class="property">href</span> = <span class="variable constant_">URL</span>.<span class="title function_">createObjectURL</span>(blob);</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 手动触发 a 标签的点击事件</span></span></span><br><span class="line"><span class="language-javascript">        a.<span class="title function_">click</span>();</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 移除 a 标签</span></span></span><br><span class="line"><span class="language-javascript">        a.<span class="title function_">remove</span>();</span></span><br><span class="line"><span class="language-javascript">      &#125;);</span></span><br><span class="line"><span class="language-javascript">    &#125;;</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="各内核和浏览器支持情况"><a href="#各内核和浏览器支持情况" class="headerlink" title="各内核和浏览器支持情况"></a>各内核和浏览器支持情况</h3><p>Mozilla 程序从 Gecko 1.8 (Firefox 1.5 (en-US)[4]) 开始支持 &lt;canvas&gt;。它首先是由 Apple 引入的，用于 OS X Dashboard 和 Safari。Internet Explorer 从 IE9 开始支持&lt;canvas&gt; ，更旧版本的 IE 中，页面可以通过引入 Google 的 Explorer Canvas[5] 项目中的脚本来获得&lt;canvas&gt;支持。Google Chrome 和 Opera 9+ 也支持 &lt;canvas&gt;。</p>
+<h3 id="小程序中提示"><a href="#小程序中提示" class="headerlink" title="小程序中提示"></a>小程序中提示</h3><p>在小程序中我们如果需呀实现的话，也是同样的原理哦，只是我们需要将创建实例和上下文的 Api 进行修改，因为小程序中是没有 dom，既然没有 dom，哪来的操作 dom 这个操作呢。</p>
+<ul>
+<li><p>如果是 uni-app 则需要使用 uni.createCanvasContext[6]进行上下文创建</p>
+</li>
+<li><p>如果是原生微信小程序则使用<code>wx.createCanvasContext</code>[7]进行创建（2.9.0）之后的库不支持</p>
+</li>
+</ul>
+<h3 id="关于本文"><a href="#关于本文" class="headerlink" title="关于本文"></a>关于本文</h3><blockquote>
+<p>作者：桃小瑞</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7174251833773752350">https://juejin.cn/post/7174251833773752350</a></p>
+</blockquote>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2022/12/16/front-end-electronic-signature/" target="_blank">前端实现电子签名（web、移动端）通用组件</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="/categories/Front-end/">Front-end</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="/tags/web/">web</a>
+                        
+                            <a href="/tags/%E7%A7%BB%E5%8A%A8%E7%AB%AF/">移动端</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/04/13/example-modify-the-storage-path-of-the-docker-image/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/04/13/example-modify-the-storage-path-of-the-docker-image/" title="发布于 2023-04-13 12:00">修改docker镜像存储路径时候发现没办法修改</a>
+                        <br>
+                    
+                    
+                        <a href="/2021/11/18/leetcode/binary-tree-tilt-20211118/" class="next-prefix">» </a> 下一篇：    <a href="/2021/11/18/leetcode/binary-tree-tilt-20211118/" title="发布于 2021-11-18 12:00">二叉树的坡度</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+
+        </div>
+    
+</div>
+    <div id="footer"></div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user"><span>Live For Code</span></div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/category" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                        <li class=""><a href="/friend" class="" target="_self"><span class="iconfont icon-link"></span>友情链接</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                
+                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+
+    
+        <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+        <script type="text/javascript" src="/js/APlayer.min.js"></script>
+        <script type="text/javascript" src="/js/Meting.min.js"></script>
+        <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+    
+    
+    <div class="wrap-right">
+        <div class="setting">
+            <div class="iconbox favorites" switch="false">
+                <span class="iconfont icon-favorites"></span>
+                <span class="icontext">关注</span>
+            </div>
+            <div class="iconbox mode">
+                <div class="light">
+                    <span class="iconfont icon-daymode"></span>
+                    <span class="icontext">浅色模式</span>
+                </div>
+                <div class="dark">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                    <span class="icontext">深色模式</span>
+                </div>
+            </div>
+            <a href="javascript:;" target="_self" class="search">
+                <div class="iconbox">
+                    <span class="iconfont icon-search-menu"></span>
+                    <span class="icontext">搜索</span>
+                </div>
+            </a>
+            <div class="iconbox bottom">
+                <div style="display: inline-block; transform: rotate(180deg);">
+                    <span class="iconfont icon-top"></span>
+                </div>
+                <span class="icontext">跳至底部</span>
+            </div>
+        </div>
+        <div class="iconbox set">
+            <div style="display: inline-block;">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="iconbox top">
+            <span class="iconfont icon-top"></span>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "Live For Code",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : "/image/website/logo.png",
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/category",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "友情链接",
+                    icon   : "icon-link",
+                    href   : "/friend",
+                    type   : "friend",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "知乎",
+                        icon   : "icon-zhihu",
+                        href   : "https://zhihu.com/people/worstone-29",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "微博",
+                        icon   : "icon-weibo",
+                        href   : "https://weibo.com/u/5749847477",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/first19326",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2022 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Valine : {
+            switch         : true,
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js"
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

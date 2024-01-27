@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            抓取m3u8视频
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">抓取m3u8视频</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-06-11
+                        </span>
+                        
+                            <span id="/2023/06/11/抓取m3u8视频/" class="leancloud_visitors" data-flag-title="抓取m3u8视频">
+                                <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                            </span>
+                        
+                        <span>
+                            <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/06/11/抓取m3u8视频/"></span>
+                        </span>  
+                    </p>
+                    
+                        
+                            <span class="category-color">python</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">spider</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="抓取m3u8视频"><a href="#抓取m3u8视频" class="headerlink" title="抓取m3u8视频"></a>抓取m3u8视频</h1><h2 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h2><p>视频url：<a target="_blank" rel="noopener" href="https://www.9meiju.cc/mohuankehuan/shandianxiadibaji/1-1.html">https://www.9meiju.cc/mohuankehuan/shandianxiadibaji/1-1.html</a></p>
+<ol>
+<li><p>打开网址分析当前视频是由多个片段组成还是单独一个视频 如果是一个单独视频，则找到网址，直接下载即可，如果为多个片段的视频，则需要找到片段的文件进行处理，本案例以m3u8为例</p>
+</li>
+<li><p>找到m3u8文件后进行下载，下载后打开文件分析是否需要秘钥，需要秘钥则根据秘钥地址进行秘钥下载，然后下载所有ts文件</p>
+</li>
+<li><p>合并所有视频</p>
+</li>
+</ol>
+<h2 id="2、实现"><a href="#2、实现" class="headerlink" title="2、实现"></a>2、实现</h2><h3 id="分析index-m3u8"><a href="#分析index-m3u8" class="headerlink" title="分析index.m3u8"></a>分析index.m3u8</h3><ul>
+<li><p>通过网络查找发现有俩个m3u8文件<br><br>url分别为<br><br><a target="_blank" rel="noopener" href="https://new.qqaku.com/20211117/iHVkqQMI/index.m3u8">https://new.qqaku.com/20211117/iHVkqQMI/index.m3u8</a><br><br><a target="_blank" rel="noopener" href="https://new.qqaku.com/20211117/iHVkqQMI/2523kb/hls/index.m3u8">https://new.qqaku.com/20211117/iHVkqQMI/2523kb/hls/index.m3u8</a><br><br>通过分析 第一个index.m3u8请求返回的内容中包含了第二个m3u8请求的url地址<br><br>也就是说通过第一个index.m3u8url请求返回包含第二个index.m3u8文件地址，通过拼接请求第二个index.m3u8后 返回了包含当前所有ts文件的地址内容<br><br>现在分析出了第二个真正的index.m3u8的地址，但是第一个地址从哪里来的呢，别慌，接下来我们来查找一下第一个url是从哪里来的<br><img src="/image/posts/1148876-20220708112536697-111029763.png" alt="默认样式截图"><br><img src="/image/posts/1148876-20220708112542330-599317718.png" alt="默认样式截图"></p>
+</li>
+<li><p>查找第一个index.m3u8的url地址<br><br>打开source<br><br>发现url存在页面源代码中的js里 知道了位置，在代码中通过正则匹配就可以获取到了<br><br>现在我们缕一下思路，通过页面源代码可以找到第一个index.m3u8的url，通过请求返回包含第二个index.m3u8文件的url内容，进行拼接，请求第二个m3u8的url，以此返回所有的ts内容<img src="/image/posts/1148876-20220708112551321-1007889998.png" alt="默认样式截图"></p>
+</li>
+</ul>
+<h2 id="3、代码实现"><a href="#3、代码实现" class="headerlink" title="3、代码实现"></a>3、代码实现</h2><h3 id="3-1-获取最后一个m3u8的url地址"><a href="#3-1-获取最后一个m3u8的url地址" class="headerlink" title="3.1 获取最后一个m3u8的url地址"></a>3.1 获取最后一个m3u8的url地址</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urljoin</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">session = requests.Session()</span><br><span class="line">session.get(<span class="string">&#x27;https://www.9meiju.cc/&#x27;</span>, headers=headers)</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://www.9meiju.cc/mohuankehuan/shandianxiadibaji/1-2.html&#x27;</span></span><br><span class="line">response = session.get(url, headers=headers)</span><br><span class="line">response.encoding = <span class="string">&#x27;UTF-8&#x27;</span></span><br><span class="line">data = response.text</span><br><span class="line"><span class="comment"># print(data)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&lt;script&gt;</span></span><br><span class="line"><span class="string">var zanpiancms_player = &#123;&quot;player&quot;:&quot;\/public\/&quot;,&quot;url&quot;:&quot;https:\/\/new.qqaku.com\/20211124\/nLwncbZW\/index.m3u8&quot;,&quot;next&quot;:&quot;https:\/\/www.9meiju.cc\/mohuankehuan\/shandianxiadibaji\/1-3.html&quot;,&quot;name&quot;:&quot;wjm3u8&quot;,&quot;apiurl&quot;:null,&quot;adtime&quot;:&quot;0&quot;,&quot;adurl&quot;:&quot;&quot;,&quot;copyright&quot;:0,&quot;danmu&quot;:&#123;&quot;status&quot;:0&#125;&#125;;</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 正则抓取上面的源代码中的m3u8的url</span></span><br><span class="line">m3u8_uri = re.search(<span class="string">&#x27;&quot;url&quot;:&quot;(.+?index.m3u8)&quot;&#x27;</span>, data).group(<span class="number">1</span>).replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入文件 分析当前的页面源代码</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;99.html&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="comment"># 写入response.content bytes二进制类型</span></span><br><span class="line">    f.write(response.content)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求可以获取index.m3u8文件</span></span><br><span class="line">response = session.get(m3u8_uri, headers=headers)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;m3u8_uri.text&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="comment"># 写入response.content bytes二进制类型</span></span><br><span class="line">    f.write(response.content)</span><br><span class="line">response.encoding = <span class="string">&#x27;UTF-8&#x27;</span></span><br><span class="line">data = response.text</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拆分返回的内容获取真整的index.m3u8文件的url</span></span><br><span class="line">url = data.split(<span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>)[-<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;m3u8_uri&#x27;</span>, m3u8_uri)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;url&#x27;</span>, url)</span><br><span class="line"><span class="built_in">print</span>(urljoin(m3u8_uri, url))</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-多线程下载ts文件与视频合并"><a href="#3-2-多线程下载ts文件与视频合并" class="headerlink" title="3.2 多线程下载ts文件与视频合并"></a>3.2 多线程下载ts文件与视频合并</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, wait</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">down_video</span>(<span class="params">url, i</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    下载ts文件</span></span><br><span class="line"><span class="string">    :param url:</span></span><br><span class="line"><span class="string">    :param i:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="comment"># print(url)</span></span><br><span class="line">    <span class="comment"># 下载ts文件</span></span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(os.path.join(path, <span class="built_in">str</span>(i)+<span class="string">&#x27;.ts&#x27;</span>), mode=<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f3:</span><br><span class="line">        f3.write(resp.content)</span><br><span class="line">    <span class="comment"># print(&#x27;&#123;&#125; 下载完成！&#x27;.format(url))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download_all_videos</span>(<span class="params">url, path</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    下载m3u8文件以及多线程下载ts文件</span></span><br><span class="line"><span class="string">    :param url:</span></span><br><span class="line"><span class="string">    :param path:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="comment"># 请求m3u8文件进行下载</span></span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;first.m3u8&quot;</span>, mode=<span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(resp.text)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.mkdir(path)</span><br><span class="line">    <span class="comment"># 开启线程 准备下载</span></span><br><span class="line">    pool = ThreadPoolExecutor(max_workers=<span class="number">50</span>)</span><br><span class="line">    <span class="comment"># 1. 读取文件</span></span><br><span class="line">    tasks = []</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;first.m3u8&quot;</span>, mode=<span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            <span class="comment"># 如果不是url 则走下次循环</span></span><br><span class="line">            <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="built_in">print</span>(line, i)</span><br><span class="line">            <span class="comment"># 开启线程</span></span><br><span class="line">            tasks.append(pool.submit(down_video, line.strip(), i))</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line">    <span class="comment"># 统一等待</span></span><br><span class="line">    wait(tasks)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理m3u8文件中的url问题</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">do_m3u8_url</span>(<span class="params">path, m3u8_filename=<span class="string">&quot;index.m3u8&quot;</span></span>):</span><br><span class="line">    <span class="comment"># 这里还没处理key的问题</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.mkdir(path)</span><br><span class="line">    <span class="comment"># else:</span></span><br><span class="line">        <span class="comment"># shutil.rmtree(path)</span></span><br><span class="line">        <span class="comment"># os.mkdir(path)</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(m3u8_filename, mode=<span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.readlines()</span><br><span class="line"></span><br><span class="line">    fw = <span class="built_in">open</span>(os.path.join(path, m3u8_filename), <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    abs_path = os.getcwd()</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data:</span><br><span class="line">        <span class="comment"># 如果不是url 则走下次循环</span></span><br><span class="line">        <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">            <span class="comment"># 判断处理是存在需要秘钥</span></span><br><span class="line">            fw.write(line)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            fw.write(<span class="string">f&#x27;<span class="subst">&#123;abs_path&#125;</span>/<span class="subst">&#123;path&#125;</span>/<span class="subst">&#123;i&#125;</span>.ts\n&#x27;</span>)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">filePath, filename=<span class="string">&#x27;output&#x27;</span></span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    进行ts文件合并 解决视频音频不同步的问题 建议使用这种</span></span><br><span class="line"><span class="string">    :param filePath:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    os.chdir(path)</span><br><span class="line">    cmd = <span class="string">f&#x27;ffmpeg -i index.m3u8 -c copy <span class="subst">&#123;filename&#125;</span>.mp4&#x27;</span></span><br><span class="line">    os.system(cmd)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># 抓取99美剧闪电侠</span></span><br><span class="line">    <span class="comment"># ts文件存储目录</span></span><br><span class="line">    path = <span class="string">&#x27;ts&#x27;</span></span><br><span class="line">    url = <span class="string">&#x27;https://new.qqaku.com/20211124/nLwncbZW/1100kb/hls/index.m3u8&#x27;</span></span><br><span class="line">    <span class="comment"># 下载m3u8文件以及ts文件</span></span><br><span class="line">    download_all_videos(url, path)</span><br><span class="line">    do_m3u8_url(path)</span><br><span class="line">    <span class="comment"># 文件合并</span></span><br><span class="line">    merge(path, <span class="string">&#x27;ts2&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;over&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>注意：当前视频合并所用的工具为ffmpeg 如需安装 查看我的另外一篇博客ffmpeg的使用</p>
+<h3 id="3-3-合并获取上面俩个代码段的代码"><a href="#3-3-合并获取上面俩个代码段的代码" class="headerlink" title="3.3 合并获取上面俩个代码段的代码"></a>3.3 合并获取上面俩个代码段的代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urljoin</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os  <span class="comment"># 执行cmd/控制台上的命令</span></span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, wait</span><br><span class="line"><span class="keyword">from</span> retrying <span class="keyword">import</span> retry</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_m3u8_url</span>(<span class="params">url</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    获取页面中m3u8的url</span></span><br><span class="line"><span class="string">    :param url: 电影页面的url</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    session = requests.Session()</span><br><span class="line">    <span class="comment"># 访问首页获取cookie</span></span><br><span class="line">    session.get(<span class="string">&#x27;https://www.9meiju.cc/&#x27;</span>, headers=headers)</span><br><span class="line">    <span class="comment"># url = &#x27;https://www.9meiju.cc/mohuankehuan/shandianxiadibaji/1-2.html&#x27;</span></span><br><span class="line">    response = session.get(url, headers=headers)</span><br><span class="line">    response.encoding = <span class="string">&#x27;UTF-8&#x27;</span></span><br><span class="line">    data = response.text</span><br><span class="line">    <span class="comment"># print(data)</span></span><br><span class="line">    m3u8_uri = re.search(<span class="string">&#x27;&quot;url&quot;:&quot;(.+?index.m3u8)&quot;&#x27;</span>, data).group(<span class="number">1</span>).replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 写入文件 分析当前的页面源代码</span></span><br><span class="line">    <span class="comment"># with open(&#x27;99.html&#x27;, &#x27;w&#x27;, encoding=&#x27;UTF-8&#x27;) as f:</span></span><br><span class="line">        <span class="comment"># 写入response.content bytes二进制类型</span></span><br><span class="line">        <span class="comment"># f.write(response.content.decode(&#x27;UTF-8&#x27;))</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 请求可以获取index.m3u8文件</span></span><br><span class="line">    response = session.get(m3u8_uri, headers=headers)</span><br><span class="line">    <span class="comment"># with open(&#x27;m3u8_uri.text&#x27;, &#x27;w&#x27;, encoding=&#x27;UTF-8&#x27;) as f:</span></span><br><span class="line">        <span class="comment"># 写入response.content bytes二进制类型</span></span><br><span class="line">        <span class="comment"># f.write(response.content.decode(&#x27;UTF-8&#x27;))</span></span><br><span class="line">    response.encoding = <span class="string">&#x27;UTF-8&#x27;</span></span><br><span class="line">    data = response.text</span><br><span class="line">    <span class="comment"># 拆分返回的内容获取真整的index.m3u8文件的url</span></span><br><span class="line">    <span class="comment"># 注意 一定要strip</span></span><br><span class="line">    url = data.split(<span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>)[-<span class="number">1</span>].strip()</span><br><span class="line">    <span class="built_in">print</span>(data)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;m3u8_uri&#x27;</span>, m3u8_uri)</span><br><span class="line">    url = urljoin(m3u8_uri, url)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;url&#x27;</span>, url)</span><br><span class="line">    <span class="keyword">return</span> url</span><br><span class="line"></span><br><span class="line"><span class="meta">@retry(<span class="params">stop_max_attempt_number=<span class="number">3</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">down_video</span>(<span class="params">url, i</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    下载ts文件</span></span><br><span class="line"><span class="string">    :param url:</span></span><br><span class="line"><span class="string">    :param i:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="comment"># print(url)</span></span><br><span class="line">    <span class="comment"># 下载ts文件</span></span><br><span class="line">    <span class="comment"># try:</span></span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(os.path.join(path, <span class="built_in">str</span>(i)+<span class="string">&#x27;.ts&#x27;</span>), mode=<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f3:</span><br><span class="line">        f3.write(resp.content)</span><br><span class="line">    <span class="keyword">assert</span> resp.status_code == <span class="number">200</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download_all_videos</span>(<span class="params">url, path</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    下载m3u8文件以及多线程下载ts文件</span></span><br><span class="line"><span class="string">    :param url:</span></span><br><span class="line"><span class="string">    :param path:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="comment"># 请求m3u8文件进行下载</span></span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;index.m3u8&quot;</span>, mode=<span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(resp.content.decode(<span class="string">&#x27;UTF-8&#x27;</span>))</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.mkdir(path)</span><br><span class="line">    <span class="comment"># 开启线程 准备下载</span></span><br><span class="line">    pool = ThreadPoolExecutor(max_workers=<span class="number">50</span>)</span><br><span class="line">    <span class="comment"># 1. 读取文件</span></span><br><span class="line">    tasks = []</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;index.m3u8&quot;</span>, mode=<span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            <span class="comment"># 如果不是url 则走下次循环</span></span><br><span class="line">            <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="built_in">print</span>(line, i)</span><br><span class="line">            <span class="comment"># 开启线程</span></span><br><span class="line">            tasks.append(pool.submit(down_video, line.strip(), i))</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line">    <span class="comment"># 统一等待</span></span><br><span class="line">    wait(tasks)</span><br><span class="line">    <span class="comment"># 如果阻塞可以给一个超时参数</span></span><br><span class="line">    <span class="comment"># wait(tasks, timeout=1800)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">do_m3u8_url</span>(<span class="params">path, m3u8_filename=<span class="string">&quot;index.m3u8&quot;</span></span>):</span><br><span class="line">    <span class="comment"># 这里还没处理key的问题</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.mkdir(path)</span><br><span class="line">    <span class="comment"># else:</span></span><br><span class="line">    <span class="comment"># shutil.rmtree(path)</span></span><br><span class="line">    <span class="comment"># os.mkdir(path)</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(m3u8_filename, mode=<span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.readlines()</span><br><span class="line"></span><br><span class="line">    fw = <span class="built_in">open</span>(os.path.join(path, m3u8_filename), <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    abs_path = os.getcwd()</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data:</span><br><span class="line">        <span class="comment"># 如果不是url 则走下次循环</span></span><br><span class="line">        <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">            fw.write(line)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            fw.write(<span class="string">f&#x27;<span class="subst">&#123;abs_path&#125;</span>/<span class="subst">&#123;path&#125;</span>/<span class="subst">&#123;i&#125;</span>.ts\n&#x27;</span>)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">path, filename=<span class="string">&#x27;output&#x27;</span></span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    进行ts文件合并 解决视频音频不同步的问题 建议使用这种</span></span><br><span class="line"><span class="string">    :param filePath:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    os.chdir(path)</span><br><span class="line">    cmd = <span class="string">f&#x27;ffmpeg -i index.m3u8 -c copy <span class="subst">&#123;filename&#125;</span>.mp4&#x27;</span></span><br><span class="line">    os.system(cmd)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 电影的url 返回index.m3u8的url地址</span></span><br><span class="line">    url = get_m3u8_url(<span class="string">&#x27;https://www.9meiju.cc/mohuankehuan/shandianxiadibaji/1-2.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ts文件存储目录</span></span><br><span class="line">    path = <span class="string">&#x27;ts&#x27;</span></span><br><span class="line">    <span class="comment"># 下载m3u8文件以及ts文件</span></span><br><span class="line">    download_all_videos(url, path)</span><br><span class="line">    do_m3u8_url(path)</span><br><span class="line">    <span class="comment"># 文件合并</span></span><br><span class="line">    merge(path, <span class="string">&#x27;第二集&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;over&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、注意事项"><a href="#4、注意事项" class="headerlink" title="4、注意事项"></a>4、注意事项</h2><h3 id="4-1-说明"><a href="#4-1-说明" class="headerlink" title="4.1 说明"></a>4.1 说明</h3><p>在获取index.m3u8文件的内容时，有的文件内容会显示…jpg&#x2F;png的情况，并没显示…ts，那么遇到这种情况需要单独处理 内容如下：<br><img src="/image/posts/1148876-20220708112815759-1113011288.png" alt="默认样式截图"></p>
+<p>这种情况使用上面的代码就无法进行正常合并，合并后的视频无法播放</p>
+<p>但使用ffprobe分析，发现识别为png，进而导致无法正常拼接</p>
+<p><img src="/image/posts/1148876-20220708112737259-1519687192.png" alt="默认样式截图"></p>
+<h3 id="在这种情况下，只需要将其中PNG文件头部分全部使用FF填充，即可处理该问题"><a href="#在这种情况下，只需要将其中PNG文件头部分全部使用FF填充，即可处理该问题" class="headerlink" title="在这种情况下，只需要将其中PNG文件头部分全部使用FF填充，即可处理该问题"></a>在这种情况下，只需要将其中PNG文件头部分全部使用FF填充，即可处理该问题</h3><p>填充后的效果如图</p>
+<p><img src="/image/posts/1148876-20220708112801024-1959299996.png" alt="默认样式截图"></p>
+<h3 id="4-2-使用代码进行处理"><a href="#4-2-使用代码进行处理" class="headerlink" title="4.2 使用代码进行处理"></a>4.2 使用代码进行处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 解析伪装成png的ts</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">resolve_ts</span>(<span class="params">src_path, dst_path</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    如果m3u8返回的ts文件地址为</span></span><br><span class="line"><span class="string">    https://p1.eckwai.com/ufile/adsocial/7ead0935-dd4f-4d2f-b17d-dd9902f8cc77.png</span></span><br><span class="line"><span class="string">    则需要下面处理后 才能进行合并</span></span><br><span class="line"><span class="string">    原因在于 使用Hexeditor打开后，发现文件头被描述为了PNG</span></span><br><span class="line"><span class="string">    在这种情况下，只需要将其中PNG文件头部分全部使用FF填充，即可处理该问题</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dst_path):</span><br><span class="line">        os.mkdir(dst_path)</span><br><span class="line">    file_list = <span class="built_in">sorted</span>(os.listdir(src_path), key=<span class="keyword">lambda</span> x: <span class="built_in">int</span>(x.split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> file_list:</span><br><span class="line">        origin_ts = os.path.join(src_path, i)</span><br><span class="line">        resolved_ts = os.path.join(dst_path, i)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            infile = <span class="built_in">open</span>(origin_ts, <span class="string">&quot;rb&quot;</span>)  <span class="comment"># 打开文件</span></span><br><span class="line">            outfile = <span class="built_in">open</span>(resolved_ts, <span class="string">&quot;wb&quot;</span>)  <span class="comment"># 内容输出</span></span><br><span class="line">            data = infile.read()</span><br><span class="line">            outfile.write(data)</span><br><span class="line">            outfile.seek(<span class="number">0x00</span>)</span><br><span class="line">            outfile.write(<span class="string">b&#x27;\xff\xff\xff\xff&#x27;</span>)</span><br><span class="line">            outfile.flush()</span><br><span class="line">            infile.close()  <span class="comment"># 文件关闭</span></span><br><span class="line">            outfile.close()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;resolve &#x27;</span> + origin_ts + <span class="string">&#x27; success&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-完整代码"><a href="#4-3-完整代码" class="headerlink" title="4.3 完整代码"></a>4.3 完整代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urljoin</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, wait</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_m3u8_url</span>(<span class="params">url</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    获取页面中m3u8的url</span></span><br><span class="line"><span class="string">    :param url: 电影页面的url</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    session = requests.Session()</span><br><span class="line">    <span class="comment"># 访问首页获取cookie</span></span><br><span class="line">    session.get(<span class="string">&#x27;https://www.9meiju.cc/&#x27;</span>, headers=headers)</span><br><span class="line">    <span class="comment"># url = &#x27;https://www.9meiju.cc/mohuankehuan/shandianxiadibaji/1-2.html&#x27;</span></span><br><span class="line">    response = session.get(url, headers=headers)</span><br><span class="line">    response.encoding = <span class="string">&#x27;UTF-8&#x27;</span></span><br><span class="line">    data = response.text</span><br><span class="line">    <span class="comment"># print(data)</span></span><br><span class="line">    m3u8_uri = re.search(<span class="string">&#x27;&quot;url&quot;:&quot;(.+?index.m3u8)&quot;&#x27;</span>, data).group(<span class="number">1</span>).replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 请求可以获取index.m3u8文件</span></span><br><span class="line">    response = session.get(m3u8_uri, headers=headers)</span><br><span class="line">    response.encoding = <span class="string">&#x27;UTF-8&#x27;</span></span><br><span class="line">    data = response.text</span><br><span class="line">    <span class="comment"># 拆分返回的内容获取真整的index.m3u8文件的url</span></span><br><span class="line">    <span class="comment"># 注意 一定要strip</span></span><br><span class="line">    url = data.split(<span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>)[-<span class="number">1</span>].strip()</span><br><span class="line">    <span class="built_in">print</span>(data)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;m3u8_uri&#x27;</span>, m3u8_uri)</span><br><span class="line">    url = urljoin(m3u8_uri, url)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;url&#x27;</span>, url)</span><br><span class="line">    <span class="keyword">return</span> url</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">down_video</span>(<span class="params">url, i</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    下载ts文件</span></span><br><span class="line"><span class="string">    :param url:</span></span><br><span class="line"><span class="string">    :param i:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="comment"># print(url)</span></span><br><span class="line">    <span class="comment"># 下载ts文件</span></span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(os.path.join(path, <span class="built_in">str</span>(i)+<span class="string">&#x27;.ts&#x27;</span>), mode=<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f3:</span><br><span class="line">        f3.write(resp.content)</span><br><span class="line">    <span class="comment"># print(&#x27;&#123;&#125; 下载完成！&#x27;.format(url))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download_all_videos</span>(<span class="params">url, path</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    下载m3u8文件以及多线程下载ts文件</span></span><br><span class="line"><span class="string">    :param url:</span></span><br><span class="line"><span class="string">    :param path:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="comment"># 请求m3u8文件进行下载</span></span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;index.m3u8&quot;</span>, mode=<span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(resp.content.decode(<span class="string">&#x27;UTF-8&#x27;</span>))</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.mkdir(path)</span><br><span class="line">    <span class="comment"># 开启线程 准备下载</span></span><br><span class="line">    pool = ThreadPoolExecutor(max_workers=<span class="number">50</span>)</span><br><span class="line">    <span class="comment"># 1. 读取文件</span></span><br><span class="line">    tasks = []</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;index.m3u8&quot;</span>, mode=<span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            <span class="comment"># 如果不是url 则走下次循环</span></span><br><span class="line">            <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="built_in">print</span>(line, i)</span><br><span class="line">            <span class="comment"># 开启线程</span></span><br><span class="line">            tasks.append(pool.submit(down_video, line.strip(), i))</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line">    <span class="comment"># 统一等待</span></span><br><span class="line">    wait(tasks)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析伪装成png的ts</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">resolve_ts</span>(<span class="params">src_path, dst_path</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    如果m3u8返回的ts文件地址为</span></span><br><span class="line"><span class="string">    https://p1.eckwai.com/ufile/adsocial/7ead0935-dd4f-4d2f-b17d-dd9902f8cc77.png</span></span><br><span class="line"><span class="string">    则需要下面处理后 才能进行合并</span></span><br><span class="line"><span class="string">    原因在于 使用Hexeditor打开后，发现文件头被描述为了PNG</span></span><br><span class="line"><span class="string">    在这种情况下，只需要将其中PNG文件头部分全部使用FF填充，即可处理该问题</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dst_path):</span><br><span class="line">        os.mkdir(dst_path)</span><br><span class="line">    file_list = <span class="built_in">sorted</span>(os.listdir(src_path), key=<span class="keyword">lambda</span> x: <span class="built_in">int</span>(x.split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> file_list:</span><br><span class="line">        origin_ts = os.path.join(src_path, i)</span><br><span class="line">        resolved_ts = os.path.join(dst_path, i)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            infile = <span class="built_in">open</span>(origin_ts, <span class="string">&quot;rb&quot;</span>)  <span class="comment"># 打开文件</span></span><br><span class="line">            outfile = <span class="built_in">open</span>(resolved_ts, <span class="string">&quot;wb&quot;</span>)  <span class="comment"># 内容输出</span></span><br><span class="line">            data = infile.read()</span><br><span class="line">            outfile.write(data)</span><br><span class="line">            outfile.seek(<span class="number">0x00</span>)</span><br><span class="line">            outfile.write(<span class="string">b&#x27;\xff\xff\xff\xff&#x27;</span>)</span><br><span class="line">            outfile.flush()</span><br><span class="line">            infile.close()  <span class="comment"># 文件关闭</span></span><br><span class="line">            outfile.close()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        else:</span></span><br><span class="line"><span class="string">            # 删除目录</span></span><br><span class="line"><span class="string">            shutil.rmtree(src_path)</span></span><br><span class="line"><span class="string">            # 将副本重命名为正式文件</span></span><br><span class="line"><span class="string">            os.rename(dst_path, dst_path.rstrip(&#x27;2&#x27;))</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;resolve &#x27;</span> + origin_ts + <span class="string">&#x27; success&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理m3u8文件中的url问题</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">do_m3u8_url</span>(<span class="params">path, m3u8_filename=<span class="string">&quot;index.m3u8&quot;</span></span>):</span><br><span class="line">    <span class="comment"># 这里还没处理key的问题</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.mkdir(path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(m3u8_filename, mode=<span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.readlines()</span><br><span class="line"></span><br><span class="line">    fw = <span class="built_in">open</span>(os.path.join(path, m3u8_filename), <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    abs_path = os.getcwd()</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data:</span><br><span class="line">        <span class="comment"># 如果不是url 则走下次循环</span></span><br><span class="line">        <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">            fw.write(line)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            fw.write(<span class="string">f&#x27;<span class="subst">&#123;abs_path&#125;</span>/<span class="subst">&#123;path&#125;</span>/<span class="subst">&#123;i&#125;</span>.ts\n&#x27;</span>)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">path, filename=<span class="string">&#x27;output&#x27;</span></span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    进行ts文件合并 解决视频音频不同步的问题 建议使用这种</span></span><br><span class="line"><span class="string">    :param filePath:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    os.chdir(path)</span><br><span class="line">    cmd = <span class="string">f&#x27;ffmpeg -i index.m3u8 -c copy <span class="subst">&#123;filename&#125;</span>.mp4&#x27;</span></span><br><span class="line">    os.system(cmd)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    url = get_m3u8_url(<span class="string">&#x27;https://www.9meiju.cc/mohuankehuan/shandianxiadibaji/1-20.html&#x27;</span>)</span><br><span class="line">    <span class="comment"># 抓取99美剧闪电侠</span></span><br><span class="line">    <span class="comment"># ts文件存储目录</span></span><br><span class="line">    path = <span class="string">&#x27;ts&#x27;</span></span><br><span class="line">    <span class="comment"># 下载m3u8文件以及ts文件</span></span><br><span class="line">    download_all_videos(url, path)</span><br><span class="line">    <span class="comment"># 合并png的ts文件</span></span><br><span class="line">    src_path = path</span><br><span class="line">    dst_path = path+<span class="string">&#x27;2&#x27;</span></span><br><span class="line">    resolve_ts(src_path, dst_path)</span><br><span class="line">    do_m3u8_url(dst_path)</span><br><span class="line">    merge(dst_path, <span class="string">&#x27;闪电侠&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;over&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、解密处理"><a href="#5、解密处理" class="headerlink" title="5、解密处理"></a>5、解密处理</h2><ul>
+<li><p>上面我们讲的是没有经过加密的 ts 文件，这些文件下载后直接可以播放，但经过AES-128加密后的文件下载后会无法播放，所以还需要进行解密。</p>
+</li>
+<li><p>如何判断是否需要加密？观察视频网站是否有m3u8的文件传输，下载下来并打开：</p>
+</li>
+</ul>
+<p>无需解密index.m3u8文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#EXTM3U</span></span><br><span class="line"><span class="comment">#EXT-X-VERSION:3</span></span><br><span class="line"><span class="comment">#EXT-X-TARGETDURATION:4</span></span><br><span class="line"><span class="comment">#EXT-X-PLAYLIST-TYPE:VOD</span></span><br><span class="line"><span class="comment">#EXT-X-MEDIA-SEQUENCE:0</span></span><br><span class="line"><span class="comment">#EXTINF:3.086,</span></span><br><span class="line">https://hey05.cjkypo.com/<span class="number">20211215</span>/FMbNtNzz/<span class="number">1</span>100kb/hls/7qs6gJc0.ts</span><br><span class="line"><span class="comment">#EXTINF:2.085,</span></span><br><span class="line">https://hey05.cjkypo.com/<span class="number">20211215</span>/FMbNtNzz/<span class="number">1</span>100kb/hls/rYpHhq0I.ts</span><br><span class="line"><span class="comment">#EXTINF:2.085,</span></span><br><span class="line">https://hey05.cjkypo.com/<span class="number">20211215</span>/FMbNtNzz/<span class="number">1</span>100kb/hls/bfays5sw.ts</span><br></pre></td></tr></table></figure>
+
+<p>需要解密index.m3u8文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#EXT-X-VERSION:3</span></span><br><span class="line"><span class="comment">#EXT-X-TARGETDURATION:1</span></span><br><span class="line"><span class="comment">#EXT-X-PLAYLIST-TYPE:VOD</span></span><br><span class="line"><span class="comment">#EXT-X-MEDIA-SEQUENCE:0</span></span><br><span class="line"><span class="comment">#EXT-X-KEY:METHOD=AES-128,URI=&quot;/20220418/671fJxOB/2000kb/hls/key.key&quot; # 当前路径为解密秘钥的位置  需要使用代码拼凑成完整路径 进行请求 域名+/20220418/671fJxOB/2000kb/hls/key.key</span></span><br><span class="line"><span class="comment">#EXTINF:1.235,</span></span><br><span class="line">/<span class="number">20220418</span>/671fJxOB/2000kb/hls/kj6uqHoP.ts  <span class="comment"># 并且这里ts的url也要拼凑完整</span></span><br><span class="line"><span class="comment">#EXTINF:1.001,</span></span><br><span class="line">/<span class="number">20220418</span>/671fJxOB/2000kb/hls/ZXX8LYPa.ts</span><br><span class="line"><span class="comment">#EXTINF:1.001,</span></span><br><span class="line">/<span class="number">20220418</span>/671fJxOB/2000kb/hls/sOezpD2H.ts</span><br><span class="line"><span class="comment">#EXTINF:1.001,</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>如果你的文件是加密的，那么你还需要一个key文件，Key文件下载的方法和m3u8文件类似，如下所示 key.key 就是我们需要下载的 key 文件，并注意这里 m3u8 有2个，需要使用的是像上面一样存在 ts 文件超链接的 m3u8 文件</p>
+</li>
+<li><p>下载所有 ts 文件，将下载好的所有的 ts 文件、m3u8、key.key 放到一个文件夹中，将 m3u8 文件改名为 index.m3u8，将 key.key 改名为 key.m3u8 。更改 index.m3u8 里的 URL，变为你本地路径的 key 文件，将所有 ts 也改为你本地的路径</p>
+</li>
+</ul>
+<p>文件路径</p>
+<blockquote>
+<p>project&#x2F;</p>
+<p>ts&#x2F;</p>
+<p>0.ts</p>
+<p>1.ts</p>
+<p>…</p>
+<p>index.m3u8</p>
+<p>key.m3u8</p>
+</blockquote>
+<p>修改后的index.m3u8内容如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#EXTM3U</span></span><br><span class="line"><span class="comment">#EXT-X-VERSION:3</span></span><br><span class="line"><span class="comment">#EXT-X-TARGETDURATION:1</span></span><br><span class="line"><span class="comment">#EXT-X-PLAYLIST-TYPE:VOD</span></span><br><span class="line"><span class="comment">#EXT-X-MEDIA-SEQUENCE:0</span></span><br><span class="line"><span class="comment">#EXT-X-KEY:METHOD=AES-128,URI=&quot;/Users/xialigang/PycharmProjects/爬虫/抓取带秘钥的电影/ts/key.m3u8&quot;</span></span><br><span class="line"><span class="comment">#EXTINF:1.235,</span></span><br><span class="line">/Users/xialigang/PycharmProjects/爬虫/抓取带秘钥的电影/ts/<span class="number">0.</span>ts</span><br><span class="line"><span class="comment">#EXTINF:1.001,</span></span><br><span class="line">/Users/xialigang/PycharmProjects/爬虫/抓取带秘钥的电影/ts/<span class="number">1.</span>ts</span><br><span class="line"><span class="comment">#EXTINF:1.001,</span></span><br><span class="line">/Users/xialigang/PycharmProjects/爬虫/抓取带秘钥的电影/ts/<span class="number">2.</span>ts</span><br></pre></td></tr></table></figure>
+
+<p>处理index.m3u8内容的代码如下所示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urljoin</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, wait</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">down_video</span>(<span class="params">url, i</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    下载ts文件</span></span><br><span class="line"><span class="string">    :param url:</span></span><br><span class="line"><span class="string">    :param i:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="comment"># print(url)</span></span><br><span class="line">    <span class="comment"># 下载ts文件</span></span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(os.path.join(path, <span class="built_in">str</span>(i) + <span class="string">&#x27;.ts&#x27;</span>), mode=<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f3:</span><br><span class="line">        f3.write(resp.content)</span><br><span class="line">    <span class="comment"># print(&#x27;&#123;&#125; 下载完成！&#x27;.format(url))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download_all_videos</span>(<span class="params">path, host</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    下载m3u8文件以及多线程下载ts文件</span></span><br><span class="line"><span class="string">    :param url:</span></span><br><span class="line"><span class="string">    :param path:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.mkdir(path)</span><br><span class="line">    <span class="comment"># 开启线程 准备下载</span></span><br><span class="line">    pool = ThreadPoolExecutor(max_workers=<span class="number">50</span>)</span><br><span class="line">    <span class="comment"># 1. 读取文件</span></span><br><span class="line">    tasks = []</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;index.m3u8&quot;</span>, mode=<span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            <span class="comment"># 如果不是url 则走下次循环</span></span><br><span class="line">            <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            line = host + line</span><br><span class="line">            <span class="built_in">print</span>(line, i)</span><br><span class="line">            <span class="comment"># 开启线程</span></span><br><span class="line">            tasks.append(pool.submit(down_video, line.strip(), i))</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">    <span class="comment"># 统一等待</span></span><br><span class="line">    wait(tasks)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理m3u8文件中的url问题</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">do_m3u8_url</span>(<span class="params">url, path, m3u8_filename=<span class="string">&quot;index.m3u8&quot;</span></span>):</span><br><span class="line">    <span class="comment"># 这里还没处理key的问题</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.mkdir(path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(m3u8_filename, mode=<span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.readlines()</span><br><span class="line"></span><br><span class="line">    fw = <span class="built_in">open</span>(os.path.join(path, m3u8_filename), <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">    abs_path = os.getcwd()</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data:</span><br><span class="line">        <span class="comment"># 如果不是url 则走下次循环</span></span><br><span class="line">        <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">            <span class="comment"># 判断处理是存在需要秘钥</span></span><br><span class="line">            <span class="keyword">if</span> line.find(<span class="string">&#x27;URI&#x27;</span>) != -<span class="number">1</span>:</span><br><span class="line">                line = re.sub(<span class="string">&#x27;(#EXT-X-KEY:METHOD=AES-128,URI=&quot;)(.*?)&quot;&#x27;</span>, <span class="string">f&#x27;\\1<span class="subst">&#123;os.path.join(abs_path, path)&#125;</span>/key.m3u8&quot;&#x27;</span>,</span><br><span class="line">                              line)</span><br><span class="line">                host = url.rsplit(<span class="string">&#x27;/&#x27;</span>, <span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">                <span class="comment"># 爬取key</span></span><br><span class="line">                download_m3u8(host + <span class="string">&#x27;/key.key&#x27;</span>, os.path.join(path, <span class="string">&#x27;key.m3u8&#x27;</span>))</span><br><span class="line">            fw.write(line)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            fw.write(<span class="string">f&#x27;<span class="subst">&#123;abs_path&#125;</span>/<span class="subst">&#123;path&#125;</span>/<span class="subst">&#123;i&#125;</span>.ts\n&#x27;</span>)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download_m3u8</span>(<span class="params">url, m3u8_filename=<span class="string">&quot;index.m3u8&quot;</span>, state=<span class="number">0</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;正在下载index.m3u8文件&#x27;</span>)</span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(m3u8_filename, mode=<span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(resp.text)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">filePath, filename=<span class="string">&#x27;output&#x27;</span></span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    进行ts文件合并 解决视频音频不同步的问题 建议使用这种</span></span><br><span class="line"><span class="string">    :param filePath:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    os.chdir(path)</span><br><span class="line">    cmd = <span class="string">f&#x27;ffmpeg -i index.m3u8 -c copy <span class="subst">&#123;filename&#125;</span>.mp4&#x27;</span></span><br><span class="line">    os.system(cmd)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_m3u8_data</span>(<span class="params">first_m3u8_url</span>):</span><br><span class="line">    session = requests.Session()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 请求第一次m3u8de url</span></span><br><span class="line">    resp = session.get(first_m3u8_url, headers=headers)</span><br><span class="line">    resp.encoding = <span class="string">&#x27;UTF-8&#x27;</span></span><br><span class="line">    data = resp.text</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第二次请求m3u8文件地址 返回最终包含所有ts文件的m3u8</span></span><br><span class="line">    second_m3u8_url = urljoin(first_m3u8_url, data.split(<span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>)[-<span class="number">1</span>].strip())</span><br><span class="line">    resp = session.get(second_m3u8_url, headers=headers)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;index.m3u8&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(resp.content)</span><br><span class="line">    <span class="keyword">return</span> second_m3u8_url</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># ts文件存储目录</span></span><br><span class="line">    path = <span class="string">&#x27;ts&#x27;</span></span><br><span class="line">    <span class="comment"># 带加密的ts文件的 index.m3u8  url</span></span><br><span class="line">    url = <span class="string">&#x27;https://s7.fsvod1.com/20220622/5LnZiDXn/index.m3u8&#x27;</span></span><br><span class="line">    meu8_url = get_m3u8_data(url)</span><br><span class="line">    <span class="comment"># 下载m3u8文件以及ts文件</span></span><br><span class="line">    host = <span class="string">&#x27;https://s7.fsvod1.com&#x27;</span>   <span class="comment"># 主机地址  用于拼凑完整的ts路径和秘钥路径</span></span><br><span class="line">    download_all_videos(path, host)</span><br><span class="line">    do_m3u8_url(meu8_url, path)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 文件合并</span></span><br><span class="line">    merge(path, <span class="string">&#x27;奇异博士&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;over&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后用ffmpeg进行合并：</p>
+<blockquote>
+<p>ffmpeg -i index.m3u8 -c copy out.mp4</p>
+</blockquote>
+<p>代码合并</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">os.chdir(<span class="string">&quot;./ts&quot;</span>)</span><br><span class="line">os.system(<span class="string">&#x27;ffmpeg -i index.m3u8 -c copy out.mp4&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>这样就大功告成了！我们成功解密并使用 ffmpeg 合并了这些 ts 视频片段，实际应用场景可能和这不一样，具体网站具体分析</p>
+<blockquote>
+<p>本文作者： lucky带你学python 交流群489197707<br><br>本文链接： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/xialigang/p/16457659.html">https://www.cnblogs.com/xialigang/p/16457659.html</a><br><br>关于博主： 评论和私信会在第一时间回复。或者直接私信我。<br><br>版权声明： 本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！<br><br>声援博主： 如果您觉得文章对您有帮助，可以点击文章右下角【推荐】一下。</p>
+</blockquote>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/06/11/%E6%8A%93%E5%8F%96m3u8%E8%A7%86%E9%A2%91/" target="_blank">抓取m3u8视频</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="/categories/python/">python</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="/tags/spider/">spider</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/06/11/local-use-gpt/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/06/11/local-use-gpt/" title="发布于 2023-06-11 12:00">本地使用 gpt 的方式</a>
+                        <br>
+                    
+                    
+                        <a href="/2023/05/05/python-built-in-function/" class="next-prefix">» </a> 下一篇：    <a href="/2023/05/05/python-built-in-function/" title="发布于 2023-05-05 12:00">Python 内置函数的分类和一些示例</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+
+        </div>
+    
+</div>
+    <div id="footer"></div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user"><span>Live For Code</span></div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/category" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                        <li class=""><a href="/friend" class="" target="_self"><span class="iconfont icon-link"></span>友情链接</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                
+                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+
+    
+        <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+        <script type="text/javascript" src="/js/APlayer.min.js"></script>
+        <script type="text/javascript" src="/js/Meting.min.js"></script>
+        <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+    
+    
+    <div class="wrap-right">
+        <div class="setting">
+            <div class="iconbox favorites" switch="false">
+                <span class="iconfont icon-favorites"></span>
+                <span class="icontext">关注</span>
+            </div>
+            <div class="iconbox mode">
+                <div class="light">
+                    <span class="iconfont icon-daymode"></span>
+                    <span class="icontext">浅色模式</span>
+                </div>
+                <div class="dark">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                    <span class="icontext">深色模式</span>
+                </div>
+            </div>
+            <a href="javascript:;" target="_self" class="search">
+                <div class="iconbox">
+                    <span class="iconfont icon-search-menu"></span>
+                    <span class="icontext">搜索</span>
+                </div>
+            </a>
+            <div class="iconbox bottom">
+                <div style="display: inline-block; transform: rotate(180deg);">
+                    <span class="iconfont icon-top"></span>
+                </div>
+                <span class="icontext">跳至底部</span>
+            </div>
+        </div>
+        <div class="iconbox set">
+            <div style="display: inline-block;">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="iconbox top">
+            <span class="iconfont icon-top"></span>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "Live For Code",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : "/image/website/logo.png",
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/category",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "友情链接",
+                    icon   : "icon-link",
+                    href   : "/friend",
+                    type   : "friend",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "知乎",
+                        icon   : "icon-zhihu",
+                        href   : "https://zhihu.com/people/worstone-29",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "微博",
+                        icon   : "icon-weibo",
+                        href   : "https://weibo.com/u/5749847477",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/first19326",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2022 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Valine : {
+            switch         : true,
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js"
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>
